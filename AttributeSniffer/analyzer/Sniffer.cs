@@ -1,11 +1,12 @@
 ﻿using AttributeSniffer.analyzer.classMetrics;
+using AttributeSniffer.analyzer.model;
+using AttributeSniffer.analyzer.report;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace AttributeSniffer.analyzer
 {
@@ -13,15 +14,17 @@ namespace AttributeSniffer.analyzer
     {
         public String Sniff(string folderPath)
         {
+            MetricsCollector metricsCollector = new MetricsCollector();
             List<ClassMetrics> collectedMetrics = new List<ClassMetrics>();
             foreach (string file in Directory.EnumerateFiles(folderPath, "*.cs"))
             {
-                FileStream classContent = File.OpenRead(file);
-
-                // Coletar métricas
+                String classContent = File.ReadAllText(file);
+                collectedMetrics.Add(metricsCollector.collect(classContent));  
             }
 
-            return JsonConvert.SerializeObject(collectedMetrics);
+            ProjectReport projectReport = new ProjectReport("projectName", collectedMetrics);
+
+            return new ReportConverter().convert(projectReport);
         }
     }
 }

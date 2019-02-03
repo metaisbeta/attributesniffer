@@ -19,10 +19,14 @@ namespace AttributeSniffer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Path:");
-            String pathToAnalyze = Console.ReadLine();
+            //Console.WriteLine("Path:");
+            //String pathToAnalyze = Console.ReadLine();
+
+            String pathToAnalyze = "C:\\Users\\Lydia\\source\\repos\\AttributeSniffer\\AttributeSniffer\\example\\classes";
 
             String result = new Sniffer().Sniff(pathToAnalyze);
+
+            Console.WriteLine(result);
 
             Console.ReadLine();
         }

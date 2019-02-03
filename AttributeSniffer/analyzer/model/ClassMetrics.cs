@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,16 @@ namespace AttributeSniffer.analyzer.classMetrics
 {
     class ClassMetrics
     {
+        [JsonProperty]
         private string className { get; set; }
-        private int numberOfAttributes { get; set; }
 
-        public ClassMetrics(string className, int numberOfAttributes)
+        [JsonProperty]
+        private Dictionary<string, int> metrics { get; set; }
+
+        public ClassMetrics(string className, Dictionary<string, int> metrics)
         {
             this.className = className;
-            this.numberOfAttributes = numberOfAttributes;
+            this.metrics = metrics;
         }
     }
 }
