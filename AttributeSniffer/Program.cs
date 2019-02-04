@@ -19,12 +19,22 @@ namespace AttributeSniffer
     {
         static void Main(string[] args)
         {
+            //Get the current working directory. 
+            var currentWd = Directory.GetParent(Directory.GetCurrentDirectory()).
+                                   Parent.Parent.FullName;
+
             //Console.WriteLine("Path:");
             //String pathToAnalyze = Console.ReadLine();
 
-            String pathToAnalyze = "C:\\Users\\Lydia\\source\\repos\\AttributeSniffer\\AttributeSniffer\\example\\classes";
+            //path lydiacbraga
+            //string pathToAnalyze = "C:\\Users\\Lydia\\source\\repos\\AttributeSniffer\\AttributeSniffer\\example\\classes";
 
-            String result = new Sniffer().Sniff(pathToAnalyze);
+            //path phillima. OS independent 
+            string pathToAnalyze = currentWd + 
+                Path.DirectorySeparatorChar + "example" 
+              + Path.DirectorySeparatorChar + "classes";
+
+            string result = new Sniffer().Sniff(pathToAnalyze);
 
             Console.WriteLine(result);
 
