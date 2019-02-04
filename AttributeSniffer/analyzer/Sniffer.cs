@@ -10,20 +10,18 @@ using System.Threading.Tasks;
 
 namespace AttributeSniffer.analyzer
 {
-    class Sniffer
-    {
-        public String Sniff(string folderPath)
-        {
+    public class Sniffer{
+
+        public string Sniff(string folderPath){
             MetricsCollector metricsCollector = new MetricsCollector();
             List<ClassMetrics> collectedMetrics = new List<ClassMetrics>();
-            foreach (string file in Directory.EnumerateFiles(folderPath, "*.cs"))
-            {
-                String classContent = File.ReadAllText(file);
+            foreach (string file in Directory.GetFiles(folderPath, "*.cs",
+                                        SearchOption.AllDirectories)){
+                string classContent = File.ReadAllText(file);
                 collectedMetrics.Add(metricsCollector.collect(classContent));  
             }
 
             ProjectReport projectReport = new ProjectReport("projectName", collectedMetrics);
-
             return new ReportConverter().convert(projectReport);
         }
     }

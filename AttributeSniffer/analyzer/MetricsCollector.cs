@@ -20,13 +20,19 @@ namespace AttributeSniffer.analyzer
             SyntaxTree tree = CSharpSyntaxTree.ParseText(classContent);
             CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
             Dictionary<string, int> classMetricsResult = new Dictionary<string, int>();
+
+            //Get class info
+            ClassInfo classInfo = new ClassInfo();
+            classInfo.Visit(root);
+                
+            //Collect metrics
             foreach (var metric in getAllMetrics())
             {
                 ((CSharpSyntaxWalker)metric).Visit(root);
                 classMetricsResult.Add(metric.getName(), metric.getResult());
             }
 
-            return new ClassMetrics("ClassName", classMetricsResult);
+            return new ClassMetrics(classInfo.FullClassName, classMetricsResult);
         }
 
         private List<MetricCollector> getAllMetrics()

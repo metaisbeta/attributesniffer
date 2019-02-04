@@ -31,8 +31,7 @@ namespace AttributeSniffer
 
             //path phillima. OS independent 
             string pathToAnalyze = currentWd + 
-                Path.DirectorySeparatorChar + "example" 
-              + Path.DirectorySeparatorChar + "classes";
+                Path.DirectorySeparatorChar + "example";
 
             string result = new Sniffer().Sniff(pathToAnalyze);
 

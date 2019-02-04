@@ -15,4 +15,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="example\classes\InnerFolder1\" />
+    <Folder Include="example\classes\InnerFolder1\InnerFolder2\" />
+  </ItemGroup>
 </Project>
