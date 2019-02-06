@@ -1,10 +1,6 @@
-﻿using AttributeSniffer.analyzer.classMetrics;
+﻿using System.Collections.Generic;
+using AttributeSniffer.analyzer.classMetrics;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AttributeSniffer.analyzer.model
 {

@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.CodeAnalysis.CSharp;
+﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace AttributeSniffer.analyzer.metrics {
-   
-   public class ClassInfo : CSharpSyntaxWalker {
+namespace AttributeSniffer.analyzer.metrics
+{
+
+    public class ClassInfo : CSharpSyntaxWalker {
 
         public string FullClassName { get; private set; }
 

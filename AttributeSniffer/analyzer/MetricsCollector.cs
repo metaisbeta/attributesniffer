@@ -1,13 +1,14 @@
-﻿using AttributeSniffer.analyzer.classMetrics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AttributeSniffer.analyzer.classMetrics;
 using AttributeSniffer.analyzer.metrics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace AttributeSniffer.analyzer {
+namespace AttributeSniffer.analyzer
+{
     public class MetricsCollector
     {
         public ClassMetrics collect(string classContent)
@@ -16,11 +17,11 @@ namespace AttributeSniffer.analyzer {
             CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
             Dictionary<string, int> classMetricsResult = new Dictionary<string, int>();
 
-            //Get class info
+            // Get class info
             ClassInfo classInfo = new ClassInfo();
             classInfo.Visit(root);
                 
-            //Collect metrics
+            // Collect metrics
             foreach (var metric in getAllMetrics())
             {
                 ((CSharpSyntaxWalker)metric).Visit(root);
