@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace AttributeSniffer.analyzer.model
 {
-    class ProjectReport
+    public class ProjectReport
     {
         [JsonProperty]
-        private string projectName { get; set; }
+        public string ProjectName { get;}
 
         [JsonProperty]
-        private List<ClassMetrics> classesMetrics { get; set; }
+        public List<ClassMetrics> ClassesMetrics { get; set; }
 
         public ProjectReport(string projectName, List<ClassMetrics> classesMetrics)
         {
-            this.projectName = projectName;
-            this.classesMetrics = classesMetrics;
+            this.ProjectName = projectName;
+            this.ClassesMetrics = classesMetrics;
         }
     }
 }

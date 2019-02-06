@@ -1,43 +1,25 @@
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Build.Locator;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.MSBuild;
-using Microsoft.CodeAnalysis.Text;
 using AttributeSniffer.analyzer;
+using AttributeSniffer.analyzer.model;
+using AttributeSniffer.analyzer.report;
 
 namespace AttributeSniffer
 {
-    class Program
-    {
+    class Program{
         static void Main(string[] args)
         {
             //Get the current working directory. 
-            var currentWd = Directory.GetParent(Directory.GetCurrentDirectory()).
-                                   Parent.Parent.FullName;
-
-            //Console.WriteLine("Path:");
-            //String pathToAnalyze = Console.ReadLine();
-
-            //path lydiacbraga
-            //string pathToAnalyze = "C:\\Users\\Lydia\\source\\repos\\AttributeSniffer\\AttributeSniffer\\example\\classes";
-
-            //path phillima. OS independent 
+            string currentWd = Directory.GetCurrentDirectory();
             string pathToAnalyze = currentWd + 
                 Path.DirectorySeparatorChar + "example";
 
-            string result = new Sniffer().Sniff(pathToAnalyze);
-
-            Console.WriteLine(result);
-
-            Console.ReadLine();
+            ProjectReport result = new Sniffer().Sniff(pathToAnalyze);
+            //Convert to string
+            string resultConverted = new ReportConverter().convert(result); 
+            Console.WriteLine(resultConverted);
+            //Console.ReadLine();
         }
     }
 }

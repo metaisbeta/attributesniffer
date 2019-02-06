@@ -1,24 +1,20 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AttributeSniffer.analyzer.classMetrics
 {
-    class ClassMetrics
+    public class ClassMetrics
     {
         [JsonProperty]
-        private string className { get; set; }
+        public string ClassName { get;}
 
         [JsonProperty]
-        private Dictionary<string, int> metrics { get; set; }
+        public Dictionary<string, int> Metrics { get;}
 
         public ClassMetrics(string className, Dictionary<string, int> metrics)
         {
-            this.className = className;
-            this.metrics = metrics;
+            this.ClassName = className;
+            this.Metrics = metrics;
         }
     }
 }

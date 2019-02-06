@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttributeSniffer", "AttributeSniffer\AttributeSniffer.csproj", "{BAB2A49F-FC27-443F-BAAD-A6F4B96DF737}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttributeSnifferTest", "AttributeSnifferTest\AttributeSnifferTest.csproj", "{B6503AEB-9966-4986-B4A7-141F3DA1C78D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BAB2A49F-FC27-443F-BAAD-A6F4B96DF737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAB2A49F-FC27-443F-BAAD-A6F4B96DF737}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAB2A49F-FC27-443F-BAAD-A6F4B96DF737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6503AEB-9966-4986-B4A7-141F3DA1C78D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6503AEB-9966-4986-B4A7-141F3DA1C78D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6503AEB-9966-4986-B4A7-141F3DA1C78D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6503AEB-9966-4986-B4A7-141F3DA1C78D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
