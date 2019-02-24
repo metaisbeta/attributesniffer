@@ -14,7 +14,7 @@ namespace AttributeSniffer.analyzer.metrics
 
         public string getName()
         {
-            return MetricsNames.ATTRIBUTES_IN_CLASS.ToString();
+            return Metric.ATTRIBUTES_IN_CLASS.getMetricIdentifier();
         }
 
         public int getResult()

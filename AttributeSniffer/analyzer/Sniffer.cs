@@ -17,11 +17,7 @@ namespace AttributeSniffer.analyzer
             List<Task> metricsCollectorTasks = new List<Task>();
             foreach (string file in Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories))
             {
-                Task.Factory.StartNew(() => {
-                    string classContent = File.ReadAllText(file);
-                    collectedMetrics.Add(metricsCollector.collect(classContent));
-                    Console.WriteLine($"Thread id {Thread.CurrentThread.ManagedThreadId}");
-                });
+                metricsCollectorTasks.Add(Task.Factory.StartNew(collectMetrics(metricsCollector, collectedMetrics, file)));
             }
 
             Task.WaitAll(metricsCollectorTasks.ToArray());
@@ -30,5 +26,14 @@ namespace AttributeSniffer.analyzer
             return new ProjectReport("projectName", collectedMetrics);
         }
 
+        private Action collectMetrics(MetricsCollector metricsCollector, List<ClassMetrics> collectedMetrics, string file)
+        {
+            return () =>
+            {
+                string classContent = File.ReadAllText(file);
+                collectedMetrics.Add(metricsCollector.collect(classContent));
+                //Console.WriteLine($"Thread id {Thread.CurrentThread.ManagedThreadId}");
+            };
+        }
     }
 }
