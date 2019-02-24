@@ -8,6 +8,7 @@ namespace AttributeSniffer
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             // Get the current working directory

@@ -10,9 +10,19 @@ namespace AttributeSniffer.analyzer
 {
     public class Sniffer{
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private MetricsCollector metricsCollector;
+
+        public Sniffer()
+        {
+            this.metricsCollector = new MetricsCollector();
+        }
+
         public ProjectReport Sniff(string folderPath)
         {
-            MetricsCollector metricsCollector = new MetricsCollector();
+            logger.Info("Starting to analyze path: {0}", folderPath);
+
             List<ClassMetrics> collectedMetrics = new List<ClassMetrics>();
             List<Task> metricsCollectorTasks = new List<Task>();
             foreach (string file in Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories))
@@ -21,6 +31,7 @@ namespace AttributeSniffer.analyzer
             }
 
             Task.WaitAll(metricsCollectorTasks.ToArray());
+            logger.Info("Finished analyzing all files of path: {0}", folderPath);
 
             // TODO fetch project name correctly
             return new ProjectReport("projectName", collectedMetrics);
@@ -32,7 +43,7 @@ namespace AttributeSniffer.analyzer
             {
                 string classContent = File.ReadAllText(file);
                 collectedMetrics.Add(metricsCollector.collect(classContent));
-                //Console.WriteLine($"Thread id {Thread.CurrentThread.ManagedThreadId}");
+                logger.Trace("Finished collecting metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
             };
         }
     }
