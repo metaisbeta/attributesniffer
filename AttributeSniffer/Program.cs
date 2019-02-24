@@ -1,8 +1,4 @@
 using System;
-using System.IO;
-using AttributeSniffer.analyzer;
-using AttributeSniffer.analyzer.model;
-using AttributeSniffer.analyzer.report;
 
 namespace AttributeSniffer
 {
@@ -11,16 +7,18 @@ namespace AttributeSniffer
 
         static void Main(string[] args)
         {
-            // Get the current working directory
-            string currentWd = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\.."));
-            string pathToAnalyze = currentWd + Path.DirectorySeparatorChar + "example";
+            //string pathToAnalyze = args[0];
+            //string reportPath = args[1];
+            //string reportType = args[2];
 
-            ProjectReport result = new Sniffer().Sniff(pathToAnalyze);
-            
-            // Convert to string and print result
-            string resultConverted = new ReportConverter().convert(result); 
-            Console.WriteLine(resultConverted);
-            Console.ReadLine();
+            Console.WriteLine("Path to analyze: ");
+            string pathToAnalyze = Console.ReadLine();
+            Console.WriteLine("Path to save the report: ");
+            string reportPath = Console.ReadLine();
+            Console.WriteLine("File type of the report [xml/json]:");
+            string reportType = Console.ReadLine();
+
+            new AttributeSnifferRunner().Analyze(pathToAnalyze, reportPath, reportType);
         }
     }
 }

@@ -8,7 +8,8 @@ using AttributeSniffer.analyzer.model;
 
 namespace AttributeSniffer.analyzer
 {
-    public class Sniffer{
+    public class Sniffer
+    {
 
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
