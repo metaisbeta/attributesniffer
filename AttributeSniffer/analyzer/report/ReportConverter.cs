@@ -1,7 +1,9 @@
-﻿using AttributeSniffer.analyzer.model;
+﻿using System.Xml;
+using AttributeSniffer.analyzer.model;
 using ExtendedXmlSerializer.Configuration;
 using ExtendedXmlSerializer.ExtensionModel.Xml;
 using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace AttributeSniffer.analyzer.report
 {
@@ -28,16 +30,16 @@ namespace AttributeSniffer.analyzer.report
 
         private string CreateJSON(ProjectReport projectReport)
         {
-            return JsonConvert.SerializeObject(projectReport);
+            return JsonConvert.SerializeObject(projectReport, Formatting.Indented);
         }
 
         private string CreateXML(ProjectReport projectReport)
         {
             IExtendedXmlSerializer serializer = new ConfigurationContainer()
                 .ConfigureType<ProjectReport>()
-                .UseOptimizedNamespaces()
+                .EnableImplicitTyping(typeof(ProjectReport))
                 .Create();
-            return serializer.Serialize(projectReport);
+            return serializer.Serialize(new XmlWriterSettings { Indent = true }, projectReport);
         }
     }
 }

@@ -16,11 +16,12 @@ namespace AttributeSniffer
         /// <param name="reportType">report's file type</param>
         public void Analyze(String pathToAnalyze, String reportPath, String reportType)
         {
-            ProjectReport result = new Sniffer().Sniff(pathToAnalyze);
+            // Analyse project
+            ProjectReport projectReport = new Sniffer().Sniff(pathToAnalyze);
 
             // Convert to string and print result
-            string resultConverted = new ReportConverter().convert(result, reportType);
-            Console.WriteLine(resultConverted);
+            string report = new Reporter().report(projectReport, reportType, reportPath);
+            Console.WriteLine(report);
             Console.ReadLine();
         }
 
