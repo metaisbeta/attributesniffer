@@ -6,6 +6,9 @@ using AttributeSniffer.analyzer.report;
 
 namespace AttributeSniffer
 {
+    /// <summary>
+    /// Attribute sniffer starter.
+    /// </summary>
     class AttributeSnifferRunner
     {
         /// <summary>

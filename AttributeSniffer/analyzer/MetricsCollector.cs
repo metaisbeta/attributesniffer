@@ -9,6 +9,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AttributeSniffer.analyzer
 {
+    /// <summary>
+    /// Metrics collector component.
+    /// </summary>
     public class MetricsCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -39,6 +42,10 @@ namespace AttributeSniffer.analyzer
             return new ClassMetrics(classInfo.FullClassName, classMetricsResult);
         }
 
+        /// <summary>
+        /// Get all the Metrics which implement the <c>MetricCollector</c> interface.
+        /// </summary>
+        /// <returns>List of all the metrics.</returns>
         private List<MetricCollector> GetAllMetrics()
         {
             Type metrictCollectorType = typeof(MetricCollector);

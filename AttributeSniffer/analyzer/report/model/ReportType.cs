@@ -2,6 +2,9 @@
 
 namespace AttributeSniffer.analyzer.report
 {
+    /// <summary>
+    /// Struct to keep all the report types supported by the system.
+    /// </summary>
     class ReportType
     {
         // Report types

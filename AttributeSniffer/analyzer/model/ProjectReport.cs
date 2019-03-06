@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 
 namespace AttributeSniffer.analyzer.model
 {
+    /// <summary>
+    /// Represents the project report, with the all the metrics of the C# classes.
+    /// </summary>
     public class ProjectReport
     {
         [JsonProperty]

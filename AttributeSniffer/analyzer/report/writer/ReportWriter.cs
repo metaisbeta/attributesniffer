@@ -2,6 +2,9 @@
 
 namespace AttributeSniffer.analyzer.report
 {
+    /// <summary>
+    /// Report Writer component.
+    /// </summary>
     class ReportWriter
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();

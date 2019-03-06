@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AttributeSniffer.analyzer.report
+﻿namespace AttributeSniffer.analyzer.report
 {
+    /// <summary>
+    /// Represents the report already processed.
+    /// </summary>
     class Report
     {
         public string ReportContent { get; set; }

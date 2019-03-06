@@ -2,6 +2,9 @@
 
 namespace AttributeSniffer.analyzer.metrics
 {
+    /// <summary>
+    /// Struct to keep all the metrics supported by the system.
+    /// </summary>
     public struct Metrics
     {
         // Metrics

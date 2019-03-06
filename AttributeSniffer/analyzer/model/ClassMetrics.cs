@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace AttributeSniffer.analyzer.classMetrics
 {
+    /// <summary>
+    /// Represent the metrics of a single class.
+    /// </summary>
     public class ClassMetrics
     {
         [JsonProperty]

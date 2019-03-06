@@ -2,6 +2,9 @@
 
 namespace AttributeSniffer.analyzer.report
 {
+    /// <summary>
+    /// Reporter component.
+    /// </summary>
     class Reporter
     {
         /// <summary>

@@ -3,7 +3,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AttributeSniffer.analyzer.metrics
 {
-
+    /// <summary>
+    /// Visit a compilation unit to extract the class name.
+    /// </summary>
     public class ClassInfo : CSharpSyntaxWalker {
 
         public string FullClassName { get; private set; }

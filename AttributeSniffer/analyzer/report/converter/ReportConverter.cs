@@ -7,6 +7,9 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace AttributeSniffer.analyzer.report
 {
+    /// <summary>
+    /// Report Converter component.
+    /// </summary>
     class ReportConverter
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();

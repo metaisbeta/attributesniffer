@@ -2,11 +2,11 @@ using System;
 
 namespace AttributeSniffer
 {
+    /// <summary>
+    /// Program runner.
+    /// </summary>
     class Program
     {
-        /// <summary>
-        /// Program runner.
-        /// </summary>
         static void Main(string[] args)
         {
             Console.WriteLine("Path to analyze: ");
