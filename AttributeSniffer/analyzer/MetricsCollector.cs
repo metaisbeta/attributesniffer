@@ -13,7 +13,12 @@ namespace AttributeSniffer.analyzer
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public ClassMetrics collect(string classContent)
+        /// <summary>
+        /// Collect metrics of a C# class.
+        /// </summary>
+        /// <param name="classContent">Content of the class.</param>
+        /// <returns>class metrics information.</returns>
+        public ClassMetrics Collect(string classContent)
         {
             SyntaxTree tree = CSharpSyntaxTree.ParseText(classContent);
             CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
@@ -23,18 +28,18 @@ namespace AttributeSniffer.analyzer
             classInfo.Visit(root);
 
             // Collect metrics
-            foreach (var metric in getAllMetrics())
+            foreach (var metric in GetAllMetrics())
             {
                 ((CSharpSyntaxWalker)metric).Visit(root);
-                classMetricsResult.Add(metric.getName(), metric.getResult());
-                logger.Info("Collected {0} metric for class '{1}'.", metric.getName(), classInfo.FullClassName);
+                classMetricsResult.Add(metric.GetName(), metric.GetResult());
+                logger.Info("Collected {0} metric for class '{1}'.", metric.GetName(), classInfo.FullClassName);
             }
 
             logger.Info("Finished collecting all metrics for class '{0}'.",classInfo.FullClassName);
             return new ClassMetrics(classInfo.FullClassName, classMetricsResult);
         }
 
-        private List<MetricCollector> getAllMetrics()
+        private List<MetricCollector> GetAllMetrics()
         {
             Type metrictCollectorType = typeof(MetricCollector);
 

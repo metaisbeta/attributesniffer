@@ -14,13 +14,13 @@ namespace AttributeSniffer
         /// <param name="pathToAnalyze">path to the classes to analyze</param>
         /// <param name="reportPath">path to save the report</param>
         /// <param name="reportType">report's file type</param>
-        public void Analyze(String pathToAnalyze, String reportPath, String reportType)
+        public void Analyze(string pathToAnalyze, string reportPath, string reportType)
         {
             // Analyse project
             ProjectReport projectReport = new Sniffer().Sniff(pathToAnalyze);
 
-            // Convert to string and print result
-            string report = new Reporter().report(projectReport, reportType, reportPath);
+            // Process report and print to console
+            string report = new Reporter().Report(projectReport, reportType, reportPath);
             Console.WriteLine(report);
             Console.ReadLine();
         }

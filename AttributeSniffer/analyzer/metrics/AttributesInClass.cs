@@ -12,12 +12,12 @@ namespace AttributeSniffer.analyzer.metrics
             this.numberOfAttributes++;
         }
 
-        public string getName()
+        public string GetName()
         {
             return Metrics.ATTRIBUTES_IN_CLASS.GetIdentifier();
         }
 
-        public int getResult()
+        public int GetResult()
         {
             return this.numberOfAttributes;
         }

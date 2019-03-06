@@ -4,12 +4,19 @@ namespace AttributeSniffer.analyzer.report
 {
     class Reporter
     {
-        public string report(ProjectReport projectReport, string reportType, string pathToSave)
+        /// <summary>
+        /// Process the project report.
+        /// </summary>
+        /// <param name="projectReport">Project report.</param>
+        /// <param name="reportType">Report type.</param>
+        /// <param name="pathToSave">Path where to save the report.</param>
+        /// <returns>The project report content converted to the report type.</returns>
+        public string Report(ProjectReport projectReport, string reportType, string pathToSave)
         {
-            string reportConverted = new ReportConverter().convert(projectReport, reportType);
-            new ReportWriter().write(pathToSave, projectReport.ProjectName, reportConverted);
+            Report report = new ReportConverter().Convert(projectReport, reportType);
+            new ReportWriter().Write(pathToSave, projectReport.ProjectName, report);
 
-            return reportConverted;
+            return report.ReportContent;
         }
     }
 }

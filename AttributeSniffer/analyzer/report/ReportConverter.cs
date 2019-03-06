@@ -11,20 +11,26 @@ namespace AttributeSniffer.analyzer.report
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public string convert(ProjectReport projectReport, string reportType)
+        /// <summary>
+        /// Convert the project report to a specific type.
+        /// </summary>
+        /// <param name="projectReport">Project report.</param>
+        /// <param name="reportType">Report type.</param>
+        /// <returns>The project report converted to the report type.</returns>
+        public Report Convert(ProjectReport projectReport, string reportType)
         {
             if (ReportType.JSON.GetIdentifier().Equals(reportType))
             {
                 logger.Info("Converting project report to JSON.");
-                return CreateJSON(projectReport);
+                return new Report(CreateJSON(projectReport), ReportType.JSON);
             } else if (ReportType.XML.GetIdentifier().Equals(reportType))
             {
                 logger.Info("Converting project report to XML.");
-                return CreateXML(projectReport);
+                return new Report(CreateXML(projectReport), ReportType.XML);
             } else
             {
                 logger.Info("A report type could not be found. Converting project report to JSON.");
-                return CreateJSON(projectReport);
+                return new Report(CreateJSON(projectReport), ReportType.JSON);
             }  
         }
 

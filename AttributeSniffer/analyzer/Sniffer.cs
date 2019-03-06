@@ -20,6 +20,11 @@ namespace AttributeSniffer.analyzer
             this.metricsCollector = new MetricsCollector();
         }
 
+        /// <summary>
+        /// Sniff code to extract metrics.
+        /// </summary>
+        /// <param name="folderPath">Folder where the files are contained.</param>
+        /// <returns>project report with all the metrics extracted.</returns>
         public ProjectReport Sniff(string folderPath)
         {
             logger.Info("Starting to analyze path: {0}", folderPath);
@@ -28,27 +33,39 @@ namespace AttributeSniffer.analyzer
             List<Task> metricsCollectorTasks = new List<Task>();
             foreach (string file in Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories))
             {
-                metricsCollectorTasks.Add(Task.Factory.StartNew(collectMetrics(metricsCollector, collectedMetrics, file)));
+                metricsCollectorTasks.Add(Task.Factory.StartNew(CollectMetrics(metricsCollector, collectedMetrics, file)));
             }
 
             Task.WaitAll(metricsCollectorTasks.ToArray());
             logger.Info("Finished analyzing all files of path: {0}", folderPath);
 
 
-            return new ProjectReport(getProjectName(folderPath), collectedMetrics);
+            return new ProjectReport(GetProjectName(folderPath), collectedMetrics);
         }
 
-        private Action collectMetrics(MetricsCollector metricsCollector, List<ClassMetrics> collectedMetrics, string file)
+        /// <summary>
+        /// Action responsible to collect metrics.
+        /// </summary>
+        /// <param name="metricsCollector">Metrics collector component</param>
+        /// <param name="collectedMetrics">List of metrics</param>
+        /// <param name="file">File to be analyzed</param>
+        /// <returns>Collecting metrics Action</returns>
+        private Action CollectMetrics(MetricsCollector metricsCollector, List<ClassMetrics> collectedMetrics, string file)
         {
             return () =>
             {
                 string classContent = File.ReadAllText(file);
-                collectedMetrics.Add(metricsCollector.collect(classContent));
+                collectedMetrics.Add(metricsCollector.Collect(classContent));
                 logger.Trace("Finished collecting metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
             };
         }
 
-        private string getProjectName(string path)
+        /// <summary>
+        /// Get the project name of the project path.
+        /// </summary>
+        /// <param name="path">Project path</param>
+        /// <returns>Project name</returns>
+        private string GetProjectName(string path)
         {
             return new DirectoryInfo(path).Name;
         }

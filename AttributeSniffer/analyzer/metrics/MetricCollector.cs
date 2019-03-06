@@ -2,7 +2,7 @@
 {
     interface MetricCollector
     {
-        string getName();
-        int getResult();
+        string GetName();
+        int GetResult();
     }
 }
