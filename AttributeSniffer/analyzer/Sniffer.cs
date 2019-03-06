@@ -34,8 +34,8 @@ namespace AttributeSniffer.analyzer
             Task.WaitAll(metricsCollectorTasks.ToArray());
             logger.Info("Finished analyzing all files of path: {0}", folderPath);
 
-            // TODO fetch project name correctly
-            return new ProjectReport("projectName", collectedMetrics);
+
+            return new ProjectReport(getProjectName(folderPath), collectedMetrics);
         }
 
         private Action collectMetrics(MetricsCollector metricsCollector, List<ClassMetrics> collectedMetrics, string file)
@@ -46,6 +46,11 @@ namespace AttributeSniffer.analyzer
                 collectedMetrics.Add(metricsCollector.collect(classContent));
                 logger.Trace("Finished collecting metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
             };
+        }
+
+        private string getProjectName(string path)
+        {
+            return new DirectoryInfo(path).Name;
         }
     }
 }
