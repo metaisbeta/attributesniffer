@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using AttributeSniffer.analyzer.classMetrics;
 using AttributeSniffer.analyzer.model;
+using System.Linq;
 
 namespace AttributeSniffer.analyzer
 {
@@ -32,7 +32,7 @@ namespace AttributeSniffer.analyzer
         {
             logger.Info("Starting to analyze path: {0}", folderPath);
 
-            List<ClassMetrics> collectedMetrics = new List<ClassMetrics>();
+            List<MetricResult> collectedMetrics = new List<MetricResult>();
             List<Task> metricsCollectorTasks = new List<Task>();
             foreach (string file in Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories))
             {
@@ -43,7 +43,7 @@ namespace AttributeSniffer.analyzer
             logger.Info("Finished analyzing all files of path: {0}", folderPath);
 
 
-            return new ProjectReport(GetProjectName(folderPath), collectedMetrics);
+            return new ProjectReport(GetProjectName(folderPath), collectedMetrics.OrderBy(metric => metric.Metric).ToList());
         }
 
         /// <summary>
@@ -53,12 +53,12 @@ namespace AttributeSniffer.analyzer
         /// <param name="collectedMetrics">List of metrics.</param>
         /// <param name="file">File to be analyzed.</param>
         /// <returns>Collecting metrics Action.</returns>
-        private Action CollectMetrics(MetricsCollector metricsCollector, List<ClassMetrics> collectedMetrics, string file)
+        private Action CollectMetrics(MetricsCollector metricsCollector, List<MetricResult> collectedMetrics, string file)
         {
             return () =>
             {
                 string classContent = File.ReadAllText(file);
-                collectedMetrics.Add(metricsCollector.Collect(classContent));
+                collectedMetrics.AddRange(metricsCollector.Collect(classContent));
                 logger.Trace("Finished collecting metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
             };
         }

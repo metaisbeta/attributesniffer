@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AttributeSniffer.analyzer.model;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -26,9 +27,19 @@ namespace AttributeSniffer.analyzer.metrics.visitor
             return Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
         }
 
-        public int GetResult()
+        public string GetElementType()
         {
-            return uniqueAttributes.Count;
+            return ElementType.CLASS.ToString();
+        }
+
+        public string GetElementIdentifier()
+        {
+            return "elementIdentifier";
+        }
+
+        public MetricResult GetResult()
+        {
+            return new MetricResult(GetElementType(), GetElementIdentifier(), GetName(), uniqueAttributes.Count);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using AttributeSniffer.analyzer.classMetrics;
 using Newtonsoft.Json;
 
 namespace AttributeSniffer.analyzer.model
@@ -13,20 +12,18 @@ namespace AttributeSniffer.analyzer.model
         public string ProjectName { get; set; }
 
         [JsonProperty]
-        public List<ClassMetrics> ClassesMetrics { get; set; }
-
-        [JsonProperty]
-        public List<ClassMetrics> ElementMetrics { get; set; }
+        public List<MetricResult> MetricsResults { get; set; }
 
         public ProjectReport()
         {
-            this.ClassesMetrics = new List<ClassMetrics>();
+            // For serialization
+            this.MetricsResults = new List<MetricResult>();
         }
 
-        public ProjectReport(string projectName, List<ClassMetrics> classesMetrics)
+        public ProjectReport(string projectName, List<MetricResult> metricsResults)
         {
             this.ProjectName = projectName;
-            this.ClassesMetrics = classesMetrics;
+            this.MetricsResults = metricsResults;
         }
     }
 }

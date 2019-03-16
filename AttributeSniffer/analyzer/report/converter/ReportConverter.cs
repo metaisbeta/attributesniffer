@@ -44,10 +44,7 @@ namespace AttributeSniffer.analyzer.report
 
         private string CreateXML(ProjectReport projectReport)
         {
-            IExtendedXmlSerializer serializer = new ConfigurationContainer()
-                .ConfigureType<ProjectReport>()
-                .EnableImplicitTyping(typeof(ProjectReport))
-                .Create();
+            IExtendedXmlSerializer serializer = new ConfigurationContainer().Create();
             return serializer.Serialize(new XmlWriterSettings { Indent = true }, projectReport);
         }
     }

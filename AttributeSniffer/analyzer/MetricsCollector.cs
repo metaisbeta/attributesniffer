@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AttributeSniffer.analyzer.classMetrics;
 using AttributeSniffer.analyzer.metrics;
+using AttributeSniffer.analyzer.model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,25 +21,21 @@ namespace AttributeSniffer.analyzer
         /// </summary>
         /// <param name="classContent">Content of the class.</param>
         /// <returns>class metrics information.</returns>
-        public ClassMetrics Collect(string classContent)
+        public List<MetricResult> Collect(string classContent)
         {
             SyntaxTree tree = CSharpSyntaxTree.ParseText(classContent);
             CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
-            Dictionary<string, int> classMetricsResult = new Dictionary<string, int>();
-
-            ClassInfo classInfo = new ClassInfo();
-            classInfo.Visit(root);
+            List<MetricResult> metricsResults = new List<MetricResult>();
 
             // Collect metrics
             foreach (var metric in GetAllMetrics())
             {
                 ((CSharpSyntaxWalker)metric).Visit(root);
-                classMetricsResult.Add(metric.GetName(), metric.GetResult());
-                logger.Info("Collected {0} metric for class '{1}'.", metric.GetName(), classInfo.FullClassName);
+                metricsResults.Add(metric.GetResult());
+                logger.Info("Collected {0} metric for element '{1}'.", metric.GetName(), metric.GetElementIdentifier());
             }
 
-            logger.Info("Finished collecting all metrics for class '{0}'.",classInfo.FullClassName);
-            return new ClassMetrics(classInfo.FullClassName, classMetricsResult);
+            return metricsResults;
         }
 
         /// <summary>
