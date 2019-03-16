@@ -13,6 +13,36 @@ namespace AttributeSniffer.analyzer.metrics
             get { return new Metrics("AC"); }
         }
 
+        public static Metrics UNIQUE_ATTRIBUTES_IN_CLASS
+        {
+            get { return new Metrics("UAC"); }
+        }
+
+        public static Metrics ATTRIBUTES_IN_ELEMENT_DECLARATION
+        {
+            get { return new Metrics("UED"); }
+        }
+
+        public static Metrics PARAMETERS_IN_ATTRIBUTE
+        {
+            get { return new Metrics("PA"); }
+        }
+
+        public static Metrics LOC_IN_ATTRIBUTE_DECLARATION
+        {
+            get { return new Metrics("LOCAD"); }
+        }
+
+        public static Metrics ATTRIBUTE_NESTING_LEVEL
+        {
+            get { return new Metrics("ANL"); }
+        }
+
+        public static Metrics ATTRIBUTE_SCHEMAS_IN_CLASS
+        {
+            get { return new Metrics("ASC"); }
+        }
+
         private string identifier;
 
         public string GetIdentifier() { return this.identifier; }
