@@ -8,16 +8,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     /// <summary>
     /// Visit a compilation unit to extract the PA metric.
     /// </summary>
-    class ParametersInAttribute : CSharpSyntaxWalker, MetricCollector
+    class ParametersInAttribute
     {
-        public string GetName()
-        {
-            return Metrics.ATTRIBUTES_IN_CLASS.GetIdentifier();
-        }
-
-        public int GetResult()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

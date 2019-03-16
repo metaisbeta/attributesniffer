@@ -5,62 +5,68 @@ namespace AttributeSniffer.analyzer.metrics
     /// <summary>
     /// Struct to keep all the metrics supported by the system.
     /// </summary>
-    public struct Metrics
+    public struct Metric
     {
         // Metrics
-        public static Metrics ATTRIBUTES_IN_CLASS
+        public static Metric ATTRIBUTES_IN_CLASS
         {
-            get { return new Metrics("AC"); }
+            get { return new Metric("AC"); }
         }
 
-        public static Metrics UNIQUE_ATTRIBUTES_IN_CLASS
+        public static Metric UNIQUE_ATTRIBUTES_IN_CLASS
         {
-            get { return new Metrics("UAC"); }
+            get { return new Metric("UAC"); }
         }
 
-        public static Metrics ATTRIBUTES_IN_ELEMENT_DECLARATION
+        public static Metric ATTRIBUTES_IN_ELEMENT_DECLARATION
         {
-            get { return new Metrics("UED"); }
+            get { return new Metric("UED"); }
         }
 
-        public static Metrics PARAMETERS_IN_ATTRIBUTE
+        public static Metric PARAMETERS_IN_ATTRIBUTE
         {
-            get { return new Metrics("PA"); }
+            get { return new Metric("PA"); }
         }
 
-        public static Metrics LOC_IN_ATTRIBUTE_DECLARATION
+        public static Metric LOC_IN_ATTRIBUTE_DECLARATION
         {
-            get { return new Metrics("LOCAD"); }
+            get { return new Metric("LOCAD"); }
         }
 
-        public static Metrics ATTRIBUTE_NESTING_LEVEL
+        public static Metric ATTRIBUTE_NESTING_LEVEL
         {
-            get { return new Metrics("ANL"); }
+            get { return new Metric("ANL"); }
         }
 
-        public static Metrics ATTRIBUTE_SCHEMAS_IN_CLASS
+        public static Metric ATTRIBUTE_SCHEMAS_IN_CLASS
         {
-            get { return new Metrics("ASC"); }
+            get { return new Metric("ASC"); }
         }
 
         private string identifier;
 
         public string GetIdentifier() { return this.identifier; }
 
-        public Metrics(string identifier)
+        public Metric(string identifier)
         {
             this.identifier = identifier;
         }
 
-        public static List<Metrics> GetMetrics()
+        public static List<Metric> GetMetrics()
         {
-            return new List<Metrics>
+            return new List<Metric>
             {
-                ATTRIBUTES_IN_CLASS
+                ATTRIBUTES_IN_CLASS,
+                UNIQUE_ATTRIBUTES_IN_CLASS,
+                ATTRIBUTES_IN_ELEMENT_DECLARATION,
+                PARAMETERS_IN_ATTRIBUTE,
+                LOC_IN_ATTRIBUTE_DECLARATION,
+                ATTRIBUTE_NESTING_LEVEL,
+                ATTRIBUTE_SCHEMAS_IN_CLASS
             };
         }
 
-        public static Metrics GetMetric(string identifier)
+        public static Metric GetMetric(string identifier)
         {
             return GetMetrics().Find(metric => identifier.Equals(metric.GetIdentifier()));
         }

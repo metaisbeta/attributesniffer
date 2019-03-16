@@ -15,6 +15,9 @@ namespace AttributeSniffer.analyzer.model
         [JsonProperty]
         public List<ClassMetrics> ClassesMetrics { get; set; }
 
+        [JsonProperty]
+        public List<ClassMetrics> ElementMetrics { get; set; }
+
         public ProjectReport()
         {
             this.ClassesMetrics = new List<ClassMetrics>();
