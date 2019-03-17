@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AttributeSniffer.analyzer.metrics.visitor.util
 {
@@ -20,5 +18,19 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
 
             return (ITypeSymbol)semanticModel.GetDeclaredSymbol(targetElement);
         }
+
+        public static ITypeSymbol getTargetElementForElementMetrics(SemanticModel semanticModel, IEnumerable<SyntaxNode> ancestorsAndASelfNodes)
+        {
+            SyntaxNode targetElement = ancestorsAndASelfNodes
+                .Where(node => node.GetType() == typeof(MethodDeclarationSyntax)
+                    || node.GetType() == typeof(PropertyDeclarationSyntax)
+                    || node.GetType() == typeof(FieldDeclarationSyntax)
+                    || node.GetType() == typeof(ParameterSyntax)
+                    || node.GetType() == typeof(ReturnStatementSyntax))
+                .First();
+
+            return (ITypeSymbol)semanticModel.GetDeclaredSymbol(targetElement);
+        }
+
     }
 }

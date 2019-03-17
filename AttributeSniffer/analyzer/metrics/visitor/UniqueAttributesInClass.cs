@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using AttributeSniffer.analyzer.metrics.visitor.util;
 using AttributeSniffer.analyzer.model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq;
-using AttributeSniffer.analyzer.metrics.visitor.util;
 
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
@@ -15,26 +12,37 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     /// </summary>
     class UniqueAttributesInClass : CSharpSyntaxWalker, MetricCollector
     {
-        private List<AttributeSyntax> uniqueAttributes { get; set; } = new List<AttributeSyntax>();
-        private AttributeSyntax visitedAttribute { get; set; }
+        private SemanticModel SemanticModel { get; set; }
+        private List<AttributeSyntax> UniqueAttributes { get; set; } = new List<AttributeSyntax>();
+        private AttributeSyntax VisitedAttribute { get; set; }
 
         public override void VisitAttribute(AttributeSyntax node)
         {
-            visitedAttribute = node;
-            if (!uniqueAttributes.Exists(attribute => attribute.IsEquivalentTo(node)))
+            VisitedAttribute = node;
+            if (!UniqueAttributes.Exists(attribute => attribute.IsEquivalentTo(node)))
             {
-                uniqueAttributes.Add(node);
+                UniqueAttributes.Add(node);
             }
         }
 
-        public MetricResult GetResult(SemanticModel semanticModel)
+        public void SetSemanticModel(SemanticModel semanticModel)
         {
-            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(semanticModel, visitedAttribute.AncestorsAndSelf());
+            this.SemanticModel = semanticModel;
+        }
+
+        public void SetResult(List<MetricResult> metricResults)
+        {
+            metricResults.Add(GetResult());
+        }
+
+        private MetricResult GetResult()
+        {
+            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
 
             string elementType = targetElementSymbol.TypeKind.ToString();
-            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
             string metricName = Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
-            return new MetricResult(elementIdentifier, elementType, metricName, uniqueAttributes.Count);
+            return new MetricResult(elementIdentifier, elementType, metricName, UniqueAttributes.Count);
         }
     }
 }

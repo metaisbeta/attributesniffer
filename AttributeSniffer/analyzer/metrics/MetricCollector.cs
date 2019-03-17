@@ -1,4 +1,5 @@
-﻿using AttributeSniffer.analyzer.model;
+﻿using System.Collections.Generic;
+using AttributeSniffer.analyzer.model;
 using Microsoft.CodeAnalysis;
 
 namespace AttributeSniffer.analyzer.metrics
@@ -8,6 +9,7 @@ namespace AttributeSniffer.analyzer.metrics
     /// </summary>
     interface MetricCollector
     {
-        MetricResult GetResult(SemanticModel semanticModel);
+        void SetSemanticModel(SemanticModel semanticModel);
+        void SetResult(List<MetricResult> metricResults);
     }
 }

@@ -23,9 +23,9 @@ namespace AttributeSniffer.analyzer.metrics
             get { return new Metric("UED"); }
         }
 
-        public static Metric PARAMETERS_IN_ATTRIBUTE
+        public static Metric ARGUMENTS_IN_ATTRIBUTE
         {
-            get { return new Metric("PA"); }
+            get { return new Metric("AA"); }
         }
 
         public static Metric LOC_IN_ATTRIBUTE_DECLARATION
@@ -59,7 +59,7 @@ namespace AttributeSniffer.analyzer.metrics
                 ATTRIBUTES_IN_CLASS,
                 UNIQUE_ATTRIBUTES_IN_CLASS,
                 ATTRIBUTES_IN_ELEMENT_DECLARATION,
-                PARAMETERS_IN_ATTRIBUTE,
+                ARGUMENTS_IN_ATTRIBUTE,
                 LOC_IN_ATTRIBUTE_DECLARATION,
                 ATTRIBUTE_NESTING_LEVEL,
                 ATTRIBUTE_SCHEMAS_IN_CLASS

@@ -31,10 +31,9 @@ namespace AttributeSniffer.analyzer
             // Collect metrics
             foreach (var metric in GetAllMetrics())
             {
+                metric.SetSemanticModel(semanticModel);
                 ((CSharpSyntaxWalker)metric).Visit(root);
-                MetricResult result = metric.GetResult(semanticModel);
-                metricsResults.Add(result);
-                logger.Info("Collected {0} metric for element '{1}'.", result.Metric, result.ElementIdentifier);
+                metric.SetResult(metricsResults);
             }
 
             return metricsResults;

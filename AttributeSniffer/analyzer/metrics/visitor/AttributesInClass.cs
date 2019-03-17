@@ -1,9 +1,9 @@
-﻿using AttributeSniffer.analyzer.metrics.visitor.util;
+﻿using System.Collections.Generic;
+using AttributeSniffer.analyzer.metrics.visitor.util;
 using AttributeSniffer.analyzer.model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq;
 
 namespace AttributeSniffer.analyzer.metrics
 {
@@ -12,23 +12,34 @@ namespace AttributeSniffer.analyzer.metrics
     /// </summary>
     class AttributesInClass : CSharpSyntaxWalker, MetricCollector
     {
-        private int numberOfAttributes { get; set; } = 0;
-        private AttributeSyntax visitedAttribute;
+        private SemanticModel SemanticModel { get; set; }
+        private int NumberOfAttributes { get; set; } = 0;
+        private AttributeSyntax VisitedAttribute;
 
         public override void VisitAttribute(AttributeSyntax node)
         {
-            this.visitedAttribute = node;
-            this.numberOfAttributes++;
+            this.VisitedAttribute = node;
+            this.NumberOfAttributes++;
         }
 
-        public MetricResult GetResult(SemanticModel semanticModel)
+        public void SetSemanticModel(SemanticModel semanticModel)
         {
-            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(semanticModel, visitedAttribute.AncestorsAndSelf());
+            this.SemanticModel = semanticModel;
+        }
+
+        public void SetResult(List<MetricResult> metricResults)
+        {
+            metricResults.Add(GetResult());
+        }
+
+        private MetricResult GetResult()
+        {
+            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
 
             string elementType = targetElementSymbol.TypeKind.ToString();
             string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
             string metricName = Metric.ATTRIBUTES_IN_CLASS.GetIdentifier();
-            return new MetricResult(elementIdentifier, elementType, metricName, numberOfAttributes);
+            return new MetricResult(elementIdentifier, elementType, metricName, NumberOfAttributes);
         }
     }
 }
