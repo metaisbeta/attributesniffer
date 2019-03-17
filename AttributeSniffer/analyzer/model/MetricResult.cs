@@ -21,10 +21,10 @@ namespace AttributeSniffer.analyzer.model
             // For serialization
         }
 
-        public MetricResult(string elementType, string elementIdentifier, string metric, int result)
+        public MetricResult(string elementIdentifier, string elementType, string metric, int result)
         {
-            this.ElementType = elementType;
             this.ElementIdentifier = elementIdentifier;
+            this.ElementType = elementType;
             this.Metric = metric;
             this.Result = result;
         }

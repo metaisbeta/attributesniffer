@@ -1,6 +1,9 @@
-﻿using AttributeSniffer.analyzer.model;
+﻿using AttributeSniffer.analyzer.metrics.visitor.util;
+using AttributeSniffer.analyzer.model;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Linq;
 
 namespace AttributeSniffer.analyzer.metrics
 {
@@ -10,30 +13,22 @@ namespace AttributeSniffer.analyzer.metrics
     class AttributesInClass : CSharpSyntaxWalker, MetricCollector
     {
         private int numberOfAttributes { get; set; } = 0;
+        private AttributeSyntax visitedAttribute;
 
         public override void VisitAttribute(AttributeSyntax node)
         {
+            this.visitedAttribute = node;
             this.numberOfAttributes++;
         }
 
-        public string GetName()
+        public MetricResult GetResult(SemanticModel semanticModel)
         {
-            return Metric.ATTRIBUTES_IN_CLASS.GetIdentifier();
-        }
+            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(semanticModel, visitedAttribute.AncestorsAndSelf());
 
-        public string GetElementType()
-        {
-            return ElementType.CLASS.ToString();
-        }
-
-        public string GetElementIdentifier()
-        {
-            return "elementIdentifier";
-        }
-
-        public MetricResult GetResult()
-        {
-            return new MetricResult(GetElementType(), GetElementIdentifier(), GetName(), numberOfAttributes);
+            string elementType = targetElementSymbol.TypeKind.ToString();
+            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+            string metricName = Metric.ATTRIBUTES_IN_CLASS.GetIdentifier();
+            return new MetricResult(elementIdentifier, elementType, metricName, numberOfAttributes);
         }
     }
 }

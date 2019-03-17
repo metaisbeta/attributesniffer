@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using AttributeSniffer.analyzer.model;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Linq;
+using AttributeSniffer.analyzer.metrics.visitor.util;
 
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
@@ -13,33 +16,25 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     class UniqueAttributesInClass : CSharpSyntaxWalker, MetricCollector
     {
         private List<AttributeSyntax> uniqueAttributes { get; set; } = new List<AttributeSyntax>();
+        private AttributeSyntax visitedAttribute { get; set; }
 
         public override void VisitAttribute(AttributeSyntax node)
         {
+            visitedAttribute = node;
             if (!uniqueAttributes.Exists(attribute => attribute.IsEquivalentTo(node)))
             {
                 uniqueAttributes.Add(node);
             }
         }
 
-        public string GetName()
+        public MetricResult GetResult(SemanticModel semanticModel)
         {
-            return Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
-        }
+            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(semanticModel, visitedAttribute.AncestorsAndSelf());
 
-        public string GetElementType()
-        {
-            return ElementType.CLASS.ToString();
-        }
-
-        public string GetElementIdentifier()
-        {
-            return "elementIdentifier";
-        }
-
-        public MetricResult GetResult()
-        {
-            return new MetricResult(GetElementType(), GetElementIdentifier(), GetName(), uniqueAttributes.Count);
+            string elementType = targetElementSymbol.TypeKind.ToString();
+            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            string metricName = Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
+            return new MetricResult(elementIdentifier, elementType, metricName, uniqueAttributes.Count);
         }
     }
 }

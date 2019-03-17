@@ -25,14 +25,16 @@ namespace AttributeSniffer.analyzer
         {
             SyntaxTree tree = CSharpSyntaxTree.ParseText(classContent);
             CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
+            SemanticModel semanticModel = getSemanticModel(tree);
             List<MetricResult> metricsResults = new List<MetricResult>();
 
             // Collect metrics
             foreach (var metric in GetAllMetrics())
             {
                 ((CSharpSyntaxWalker)metric).Visit(root);
-                metricsResults.Add(metric.GetResult());
-                logger.Info("Collected {0} metric for element '{1}'.", metric.GetName(), metric.GetElementIdentifier());
+                MetricResult result = metric.GetResult(semanticModel);
+                metricsResults.Add(result);
+                logger.Info("Collected {0} metric for element '{1}'.", result.Metric, result.ElementIdentifier);
             }
 
             return metricsResults;
@@ -51,6 +53,14 @@ namespace AttributeSniffer.analyzer
                 .Where(type => metrictCollectorType.IsAssignableFrom(type) && !type.IsInterface)
                 .Select(type => (MetricCollector)Activator.CreateInstance(type))
                 .ToList();
+        }
+
+        private SemanticModel getSemanticModel(SyntaxTree tree)
+        {
+            PortableExecutableReference Mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+            CSharpCompilation compilation = CSharpCompilation.Create("Compilation").AddReferences(Mscorlib).AddSyntaxTrees(tree);
+
+            return compilation.GetSemanticModel(tree);
         }
     }
 }

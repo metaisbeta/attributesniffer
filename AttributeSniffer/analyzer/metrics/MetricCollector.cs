@@ -1,4 +1,5 @@
 ﻿using AttributeSniffer.analyzer.model;
+using Microsoft.CodeAnalysis;
 
 namespace AttributeSniffer.analyzer.metrics
 {
@@ -7,10 +8,6 @@ namespace AttributeSniffer.analyzer.metrics
     /// </summary>
     interface MetricCollector
     {
-        string GetElementType();
-        string GetElementIdentifier();
-        string GetName();
-
-        MetricResult GetResult();
+        MetricResult GetResult(SemanticModel semanticModel);
     }
 }
