@@ -45,7 +45,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
             string parentIdentifier = parentElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
 
             string elementType = "Attribute";
-            string elementIdentifier = string.Format("{0}.{1}", parentIdentifier, VisitedAttribute.Name.ToString());
+            string elementIdentifier = string.Format("{0}#{1}", parentIdentifier, VisitedAttribute.Name.ToString());
             string metricName = Metric.ARGUMENTS_IN_ATTRIBUTE.GetIdentifier();
             return new MetricResult(elementIdentifier, elementType, metricName, NumberOfArguments);
         }
