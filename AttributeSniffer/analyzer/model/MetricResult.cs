@@ -2,13 +2,13 @@
 
 namespace AttributeSniffer.analyzer.model
 {
+    /// <summary>
+    /// Represents a metric result. Includes the element identifier, the metric abbreviation and its result.
+    /// </summary>
     public class MetricResult
     {        
         [JsonProperty]
-        public string ElementIdentifier { get; set; }
-
-        [JsonProperty]
-        public string ElementType { get; set; }
+        public ElementIdentifier ElementIdentifier { get; set; }
 
         [JsonProperty]
         public string Metric { get; set; }
@@ -21,12 +21,11 @@ namespace AttributeSniffer.analyzer.model
             // For serialization
         }
 
-        public MetricResult(string elementIdentifier, string elementType, string metric, int result)
+        public MetricResult(ElementIdentifier elementIdentifier, string metric, int result)
         {
-            this.ElementIdentifier = elementIdentifier;
-            this.ElementType = elementType;
-            this.Metric = metric;
-            this.Result = result;
+            ElementIdentifier = elementIdentifier;
+            Metric = metric;
+            Result = result;
         }
     }
 }

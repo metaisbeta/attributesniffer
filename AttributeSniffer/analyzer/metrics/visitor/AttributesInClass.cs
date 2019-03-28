@@ -34,12 +34,10 @@ namespace AttributeSniffer.analyzer.metrics
 
         private MetricResult GetResult()
         {
-            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
+            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getTargetElementForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
 
-            string elementType = targetElementSymbol.TypeKind.ToString();
-            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
             string metricName = Metric.ATTRIBUTES_IN_CLASS.GetIdentifier();
-            return new MetricResult(elementIdentifier, elementType, metricName, NumberOfAttributes);
+            return new MetricResult(elementIdentifier, metricName, NumberOfAttributes);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AttributeSniffer.analyzer.metrics.visitor.util;
 using AttributeSniffer.analyzer.model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -36,13 +37,9 @@ namespace AttributeSniffer.analyzer.metrics.visitor
 
         private MetricResult GetResult()
         {
-            ISymbol parentElementSymbol = SemanticModel.GetDeclaredSymbol(VisitedAttribute.Parent.Parent);
-            string parentIdentifier = parentElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
-
-            string elementType = "Attribute";
-            string elementIdentifier = string.Format("{0}#{1}", parentIdentifier, VisitedAttribute.Name.ToString());
+            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getTargetElementForAttributeMetrics(SemanticModel, VisitedAttribute);
             string metricName = Metric.LOC_IN_ATTRIBUTE_DECLARATION.GetIdentifier();
-            return new MetricResult(elementIdentifier, elementType, metricName, NumberOfLines);
+            return new MetricResult(elementIdentifier, metricName, NumberOfLines);
         }
     }
 }

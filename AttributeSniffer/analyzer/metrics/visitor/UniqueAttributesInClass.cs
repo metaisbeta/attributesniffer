@@ -37,12 +37,9 @@ namespace AttributeSniffer.analyzer.metrics.visitor
 
         private MetricResult GetResult()
         {
-            ITypeSymbol targetElementSymbol = ElementIdentifierHelper.getTargetElementForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
-
-            string elementType = targetElementSymbol.TypeKind.ToString();
-            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getTargetElementForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
             string metricName = Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
-            return new MetricResult(elementIdentifier, elementType, metricName, UniqueAttributes.Count);
+            return new MetricResult(elementIdentifier, metricName, UniqueAttributes.Count);
         }
     }
 }
