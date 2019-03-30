@@ -20,7 +20,7 @@ namespace AttributeSniffer.analyzer.metrics
 
         public static Metric ATTRIBUTES_IN_ELEMENT_DECLARATION
         {
-            get { return new Metric("UED"); }
+            get { return new Metric("AED"); }
         }
 
         public static Metric ARGUMENTS_IN_ATTRIBUTE

@@ -30,5 +30,19 @@ namespace AttributeSniffer.analyzer.model
             ElementType = elementType;
             LineNumber = lineNumber;
         }
+
+        public override bool Equals(object obj)
+        {
+            var identifier = obj as ElementIdentifier;
+            return identifier != null &&
+                   ElementName == identifier.ElementName &&
+                   ElementType == identifier.ElementType &&
+                   LineNumber == identifier.LineNumber;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ElementName, ElementType, LineNumber);
+        }
     }
 }

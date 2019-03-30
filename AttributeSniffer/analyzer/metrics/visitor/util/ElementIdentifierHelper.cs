@@ -11,26 +11,32 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
     {
         private const string attributeIdentifierFormat = "{0}#{1}";
         private const string attributeType = "Attribute";
+        private const string methodType = "Method";
+        private const string eventType = "Event";
+        private const string propertyType = "Property";
+        private const string fieldType = "Field";
+        private const string parameterType = "Parameter";
+        private const string returnType = "Return";
 
-        public static ElementIdentifier getTargetElementForClassMetrics(SemanticModel semanticModel, IEnumerable<SyntaxNode> ancestorsAndASelfNodes)
+        public static ElementIdentifier getElementIdentifierForClassMetrics(SemanticModel semanticModel, IEnumerable<SyntaxNode> ancestorsAndASelfNodes)
         {
             SyntaxNode targetElement = ancestorsAndASelfNodes
                 .Where(node => node.GetType() == typeof(StructDeclarationSyntax)
                     || node.GetType() == typeof(ClassDeclarationSyntax)
                     || node.GetType() == typeof(InterfaceDeclarationSyntax)
                     || node.GetType() == typeof(EnumDeclarationSyntax))
-                .First();
+                .Last();
 
             ITypeSymbol targetElementSymbol = (ITypeSymbol)semanticModel.GetDeclaredSymbol(targetElement);
 
-            string elementType = targetElementSymbol.TypeKind.ToString();
+            string elementType = ElementIdentifierType.GetElementType(targetElement.GetType()).GetTypeIdentifier();
             string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
             int lineNumber = semanticModel.SyntaxTree.GetLineSpan(targetElement.Span).StartLinePosition.Line + 1;
 
             return new ElementIdentifier(elementIdentifier, elementType, lineNumber);
         }
 
-        public static ElementIdentifier getTargetElementForAttributeMetrics(SemanticModel semanticModel, AttributeSyntax attribute)
+        public static ElementIdentifier getElementIdentifierForAttributeMetrics(SemanticModel semanticModel, AttributeSyntax attribute)
         {
             ISymbol parentElementSymbol = semanticModel.GetDeclaredSymbol(attribute.Parent.Parent);
             string parentIdentifier = parentElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
@@ -40,18 +46,16 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             return new ElementIdentifier(elementIdentifier, attributeType, lineNumber);
         }
 
-        public static ITypeSymbol getTargetElementForElementMetrics(SemanticModel semanticModel, IEnumerable<SyntaxNode> ancestorsAndASelfNodes)
+        public static ElementIdentifier getElementIdentifierForElementMetrics(SemanticModel semanticModel, AttributeSyntax attribute)
         {
-            SyntaxNode targetElement = ancestorsAndASelfNodes
-                .Where(node => node.GetType() == typeof(MethodDeclarationSyntax)
-                    || node.GetType() == typeof(PropertyDeclarationSyntax)
-                    || node.GetType() == typeof(FieldDeclarationSyntax)
-                    || node.GetType() == typeof(ParameterSyntax)
-                    || node.GetType() == typeof(ReturnStatementSyntax))
-                .First();
+            SyntaxNode targetElement = attribute.Parent.Parent;
+            ISymbol targetElementSymbol = semanticModel.GetDeclaredSymbol(targetElement);
 
-            return (ITypeSymbol)semanticModel.GetDeclaredSymbol(targetElement);
+            string elementType = ElementIdentifierType.GetElementType(targetElement.GetType()).GetTypeIdentifier();
+            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+            int lineNumber = semanticModel.SyntaxTree.GetLineSpan(targetElement.Span).StartLinePosition.Line + 1;
+
+            return new ElementIdentifier(elementIdentifier, elementType, lineNumber);
         }
-
     }
 }

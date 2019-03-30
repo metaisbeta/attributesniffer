@@ -42,7 +42,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
 
         private MetricResult GetResult()
         {
-            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getTargetElementForAttributeMetrics(SemanticModel, VisitedAttribute);
+            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getElementIdentifierForAttributeMetrics(SemanticModel, VisitedAttribute);
             string metricName = Metric.ARGUMENTS_IN_ATTRIBUTE.GetIdentifier();
             return new MetricResult(elementIdentifier, metricName, NumberOfArguments);
         }

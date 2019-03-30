@@ -37,7 +37,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
 
         private MetricResult GetResult()
         {
-            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getTargetElementForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
+            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getElementIdentifierForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
             string metricName = Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
             return new MetricResult(elementIdentifier, metricName, UniqueAttributes.Count);
         }
