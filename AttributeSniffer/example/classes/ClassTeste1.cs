@@ -9,6 +9,9 @@ namespace AttributeSniffer.example.classes
         public string property { get; set; }
 
         [Attribute1]
+        public string field1, field2, field3;
+
+        [Attribute1]
         public enum enumTest
         {
             test

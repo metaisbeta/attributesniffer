@@ -17,16 +17,19 @@ namespace AttributeSniffer.analyzer.metrics.visitor
 
         public override void VisitAttribute(AttributeSyntax node)
         {
-            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getElementIdentifierForElementMetrics(SemanticModel, node);
+            List<ElementIdentifier> elementIdentifiers = ElementIdentifierHelper.getElementIdentifiersForElementMetrics(SemanticModel, node);
 
-            if (attributesByElement.ContainsKey(elementIdentifier))
+            elementIdentifiers.ForEach(elementIdentifier =>
             {
-                attributesByElement[elementIdentifier].Add(node);
-            }
-            else
-            {
-                attributesByElement.Add(elementIdentifier, new List<AttributeSyntax>() { node });
-            }   
+                if (attributesByElement.ContainsKey(elementIdentifier))
+                {
+                    attributesByElement[elementIdentifier].Add(node);
+                }
+                else
+                {
+                    attributesByElement.Add(elementIdentifier, new List<AttributeSyntax>() { node });
+                }
+            });
         }
 
         public void SetResult(List<MetricResult> metricResults)

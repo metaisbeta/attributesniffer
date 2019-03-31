@@ -19,9 +19,10 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         public override void VisitAttribute(AttributeSyntax node)
         {
             VisitedAttribute = node;
-            if (!UniqueAttributes.Exists(attribute => attribute.IsEquivalentTo(node)))
+            AttributeSyntax normalized = node.NormalizeWhitespace();
+            if (!UniqueAttributes.Exists(attribute => attribute.IsEquivalentTo(normalized)))
             {
-                UniqueAttributes.Add(node);
+                UniqueAttributes.Add(normalized);
             }
         }
 

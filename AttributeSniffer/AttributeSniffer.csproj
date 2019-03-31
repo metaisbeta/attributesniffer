@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="example\NovaPasta1\**" />
+    <Compile Remove="example\NovaPasta\**" />
+    <EmbeddedResource Remove="example\NovaPasta1\**" />
+    <EmbeddedResource Remove="example\NovaPasta\**" />
+    <None Remove="example\NovaPasta1\**" />
+    <None Remove="example\NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ExtendedXmlSerializer" Version="2.1.16" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.1.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.3" PrivateAssets="all" />

@@ -15,7 +15,7 @@ namespace AttributeSniffer.example.classes
         }
 
         [Attribute2]
-        [Attribute3(Values = new int[] { 1, 2, 3 })]
+        [Attribute3(new int[] { 1, 2, 3 })]
         public void teste2()
         {
         }
