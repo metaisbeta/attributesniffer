@@ -90,6 +90,13 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             {
                 ISymbol targetElementSymbol = semanticModel.GetDeclaredSymbol(targetElement);
                 string parentIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+
+                if (targetElement.GetType() == typeof(ParameterSyntax))
+                {
+                    parentIdentifier = string
+                        .Format(identifierFormat, targetElementSymbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat), targetElementSymbol.Name);
+                }
+
                 AttributeListSyntax attributeList = (AttributeListSyntax)attribute.Parent;
                 AttributeTargetSpecifierSyntax attributeTarget = attributeList.Target;
 
