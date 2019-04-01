@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AttributeSniffer.analyzer.metrics;
 using AttributeSniffer.analyzer.model;
 
 namespace AttributeSniffer.analyzer
@@ -34,7 +35,9 @@ namespace AttributeSniffer.analyzer
 
             List<MetricResult> collectedMetrics = new List<MetricResult>();
             List<Task> metricsCollectorTasks = new List<Task>();
-            foreach (string file in Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories))
+
+            string[] csFiles = Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories);
+            foreach (string file in csFiles)
             {
                 metricsCollectorTasks.Add(Task.Factory.StartNew(CollectMetrics(metricsCollector, collectedMetrics, file)));
             }
@@ -42,8 +45,10 @@ namespace AttributeSniffer.analyzer
             Task.WaitAll(metricsCollectorTasks.ToArray());
             logger.Info("Finished analyzing all files of path: {0}", folderPath);
 
+            List<MetricResult> acMetrics = collectedMetrics.FindAll(metric => metric.Metric.Equals(Metric.ATTRIBUTES_IN_CLASS.GetIdentifier()));
+            int numberOfAttributes = acMetrics.Sum(ac => ac.Result);
 
-            return new ProjectReport(GetProjectName(folderPath), collectedMetrics.OrderBy(metric => metric.Metric).ToList());
+            return new ProjectReport(GetProjectName(folderPath), csFiles.Count(), acMetrics.Count, numberOfAttributes, collectedMetrics.OrderBy(metric => metric.Metric).ToList());
         }
 
         /// <summary>

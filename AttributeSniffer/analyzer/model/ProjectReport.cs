@@ -12,6 +12,15 @@ namespace AttributeSniffer.analyzer.model
         public string ProjectName { get; set; }
 
         [JsonProperty]
+        public int classesNumber { get; set; }
+
+        [JsonProperty]
+        public int classesWithAttributesNumber { get; set; }
+
+        [JsonProperty]
+        public int attributesNumber { get; set; }
+
+        [JsonProperty]
         public List<MetricResult> MetricsResults { get; set; }
 
         public ProjectReport()
@@ -20,10 +29,13 @@ namespace AttributeSniffer.analyzer.model
             this.MetricsResults = new List<MetricResult>();
         }
 
-        public ProjectReport(string projectName, List<MetricResult> metricsResults)
+        public ProjectReport(string projectName, int classesNumber, int classesWithAttributesNumber, int attributesNumber, List<MetricResult> metricsResults)
         {
-            this.ProjectName = projectName;
-            this.MetricsResults = metricsResults;
+            ProjectName = projectName;
+            this.classesNumber = classesNumber;
+            this.classesWithAttributesNumber = classesWithAttributesNumber;
+            this.attributesNumber = attributesNumber;
+            MetricsResults = metricsResults;
         }
     }
 }

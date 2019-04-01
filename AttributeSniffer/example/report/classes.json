@@ -1,0 +1,584 @@
+{
+  "ProjectName": "classes",
+  "classesNumber": 7,
+  "classesWithAttributesNumber": 7,
+  "attributesNumber": 17,
+  "MetricsResults": [
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest4#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest5#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.ClassTest3#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest7#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest6#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste1()#Attribute2",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste1()#Attribute2",
+        "ElementType": "Attribute",
+        "LineNumber": 9
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste1()#Attribute3",
+        "ElementType": "Attribute",
+        "LineNumber": 10
+      },
+      "Metric": "AA",
+      "Result": 3
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste2()#Attribute2",
+        "ElementType": "Attribute",
+        "LineNumber": 17
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste2()#Attribute3",
+        "ElementType": "Attribute",
+        "LineNumber": 18
+      },
+      "Metric": "AA",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "string#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 23
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.test4()#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 27
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.property#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.field1.field2.field3#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 11
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.enumTest#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 14
+      },
+      "Metric": "AA",
+      "Result": 0
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest4",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest5",
+        "ElementType": "Interface",
+        "LineNumber": 8
+      },
+      "Metric": "AC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.ClassTest3",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest7",
+        "ElementType": "Enum",
+        "LineNumber": 5
+      },
+      "Metric": "AC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest6",
+        "ElementType": "Struct",
+        "LineNumber": 8
+      },
+      "Metric": "AC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AC",
+      "Result": 8
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AC",
+      "Result": 4
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest4",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest5",
+        "ElementType": "Interface",
+        "LineNumber": 8
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.ClassTest3",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest7",
+        "ElementType": "Enum",
+        "LineNumber": 5
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest6",
+        "ElementType": "Struct",
+        "LineNumber": 8
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste1()",
+        "ElementType": "Method",
+        "LineNumber": 8
+      },
+      "Metric": "AED",
+      "Result": 3
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste2()",
+        "ElementType": "Method",
+        "LineNumber": 17
+      },
+      "Metric": "AED",
+      "Result": 2
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "string",
+        "ElementType": "Parameter",
+        "LineNumber": 23
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.test4()#Return",
+        "ElementType": "Return",
+        "LineNumber": 27
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.property",
+        "ElementType": "Property",
+        "LineNumber": 8
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.field1",
+        "ElementType": "Attribute",
+        "LineNumber": 12
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.field2",
+        "ElementType": "Attribute",
+        "LineNumber": 12
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.field3",
+        "ElementType": "Attribute",
+        "LineNumber": 12
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.enumTest",
+        "ElementType": "Enum",
+        "LineNumber": 14
+      },
+      "Metric": "AED",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest4#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest5#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.ClassTest3#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest7#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest6#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste1()#Attribute2",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste1()#Attribute2",
+        "ElementType": "Attribute",
+        "LineNumber": 9
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste1()#Attribute3",
+        "ElementType": "Attribute",
+        "LineNumber": 10
+      },
+      "Metric": "LOCAD",
+      "Result": 3
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste2()#Attribute2",
+        "ElementType": "Attribute",
+        "LineNumber": 17
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.teste2()#Attribute3",
+        "ElementType": "Attribute",
+        "LineNumber": 18
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "string#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 23
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2.test4()#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 27
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 5
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.property#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 8
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.field1.field2.field3#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 11
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1.enumTest#Attribute1",
+        "ElementType": "Attribute",
+        "LineNumber": 14
+      },
+      "Metric": "LOCAD",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest4",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "UAC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest5",
+        "ElementType": "Interface",
+        "LineNumber": 8
+      },
+      "Metric": "UAC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.ClassTest3",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "UAC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest7",
+        "ElementType": "Enum",
+        "LineNumber": 5
+      },
+      "Metric": "UAC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.InnerFolder1.InnerFolder2.ClassTest6",
+        "ElementType": "Struct",
+        "LineNumber": 8
+      },
+      "Metric": "UAC",
+      "Result": 1
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste2",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "UAC",
+      "Result": 4
+    },
+    {
+      "ElementIdentifier": {
+        "ElementName": "AttributeSniffer.example.classes.ClassTeste1",
+        "ElementType": "Class",
+        "LineNumber": 5
+      },
+      "Metric": "UAC",
+      "Result": 1
+    }
+  ]
+}
