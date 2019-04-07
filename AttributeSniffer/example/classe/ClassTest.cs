@@ -35,7 +35,7 @@ namespace AttributeSniffer.example.classe
         [Attribute3(2, 3, 4)]
         public string test2([Attribute1] string param)
         {
-            return "";
+            return "teste";
         }
 
         [Attribute3(new int[] { 2, 3, 4 })]
