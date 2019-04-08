@@ -70,38 +70,28 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                     ElementIdentifierType elementIdentifierType = elementPossibleTypes.First();
                     elementType = elementIdentifierType.GetTypeIdentifier();
 
-                    if (elementIdentifierType.GetTypeIdentifier() != null)
+                    if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.RETURN_TYPE.GetElementTarget())
                     {
-                        if (elementIdentifierType.GetElementTarget() == "return")
-                        {
-                            Tuple<string, int> fieldInformation = GetIdentifierForReturnStatement(semanticModel, (MethodDeclarationSyntax)node.Parent);
-                            elementIdentifier = fieldInformation.Item1;
-                            lineNumber = fieldInformation.Item2;
-                            elementType = elementIdentifierType.GetTypeIdentifier();
-                        } else
-                        {
-                            attributeTargetNode = node.Ancestors().Where(ancestor => elementIdentifierType.GetElementType().Equals(ancestor.GetType())).First();
-                        }
-                    }
-                    else
+                        Tuple<string, int> fieldInformation = GetIdentifierForReturnStatement(semanticModel, (MethodDeclarationSyntax)node.Parent);
+                        elementIdentifier = fieldInformation.Item1;
+                        lineNumber = fieldInformation.Item2;
+                        elementType = elementIdentifierType.GetTypeIdentifier();
+                    } else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.ASSEMBLY_TYPE.GetElementTarget())
                     {
-                        // Possible targets for nullable type: assembly or module.
-                        MetadataReference reference = semanticModel.Compilation.References.First();
-                        ISymbol assemblyOrModule = semanticModel.Compilation.GetAssemblyOrModuleSymbol(reference);
-
-                        if (assemblyOrModule.GetType() == typeof(IAssemblySymbol))
-                        {
-                            elementIdentifier = ((IAssemblySymbol)assemblyOrModule).Identity.Name;
-                        }
-                        else
-                        {
-                            elementIdentifier = ((IModuleSymbol)assemblyOrModule).GetMetadata().Name;
-                        }
+                        elementIdentifier = semanticModel.Compilation.AssemblyName;
+                    } else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.MODULE_TYPE.GetElementTarget())
+                    {
+                        elementIdentifier = semanticModel.Compilation.SourceModule.Name;
+                    } else
+                    {
+                        attributeTargetNode = node.Ancestors().Where(ancestor => elementIdentifierType.GetElementType().Equals(ancestor.GetType())).First();
                     }
                 }
             }
 
-            if (elementType != ElementIdentifierType.RETURN_TYPE.GetTypeIdentifier())
+            if (elementType != ElementIdentifierType.RETURN_TYPE.GetTypeIdentifier()
+                && elementType != ElementIdentifierType.ASSEMBLY_TYPE.GetTypeIdentifier()
+                && elementType != ElementIdentifierType.MODULE_TYPE.GetTypeIdentifier())
             {
                 if (attributeTargetNode == null)
                 {

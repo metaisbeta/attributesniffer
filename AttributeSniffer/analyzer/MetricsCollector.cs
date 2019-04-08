@@ -21,11 +21,11 @@ namespace AttributeSniffer.analyzer
         /// </summary>
         /// <param name="classContent">Content of the class.</param>
         /// <returns>class metrics information.</returns>
-        public List<MetricResult> Collect(string classContent)
+        public List<MetricResult> Collect(string fileName, string classContent)
         {
             SyntaxTree tree = CSharpSyntaxTree.ParseText(classContent);
             CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
-            SemanticModel semanticModel = getSemanticModel(tree);
+            SemanticModel semanticModel = getSemanticModel(fileName, tree);
             List<MetricResult> metricsResults = new List<MetricResult>();
 
             // Collect metrics
@@ -54,10 +54,10 @@ namespace AttributeSniffer.analyzer
                 .ToList();
         }
 
-        private SemanticModel getSemanticModel(SyntaxTree tree)
+        private SemanticModel getSemanticModel(String assemblyName, SyntaxTree tree)
         {
             PortableExecutableReference Mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-            CSharpCompilation compilation = CSharpCompilation.Create("Compilation").AddReferences(Mscorlib).AddSyntaxTrees(tree);
+            CSharpCompilation compilation = CSharpCompilation.Create(assemblyName).AddReferences(Mscorlib).AddSyntaxTrees(tree);
 
             return compilation.GetSemanticModel(tree);
         }

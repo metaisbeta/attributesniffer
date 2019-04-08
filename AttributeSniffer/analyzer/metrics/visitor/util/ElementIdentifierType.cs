@@ -86,6 +86,8 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
         {
             return new List<ElementIdentifierType>
             {
+                ASSEMBLY_TYPE,
+                MODULE_TYPE,
                 STRUCT_TYPE,
                 CLASS_TYPE,
                 INTERFACE_TYPE,

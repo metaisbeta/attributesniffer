@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using AttributeSniffer.example.customAttribute;
 
+[assembly: Attribute1]
+[module: Attribute1]
+
 namespace AttributeSniffer.example.classe
 {
     [Attribute1]
