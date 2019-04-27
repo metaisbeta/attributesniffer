@@ -33,16 +33,6 @@ namespace AttributeSniffer.analyzer.metrics
             get { return new Metric("LOCAD"); }
         }
 
-        public static Metric ATTRIBUTE_NESTING_LEVEL
-        {
-            get { return new Metric("ANL"); }
-        }
-
-        public static Metric ATTRIBUTE_SCHEMAS_IN_CLASS
-        {
-            get { return new Metric("ASC"); }
-        }
-
         private string identifier;
 
         public string GetIdentifier() { return this.identifier; }
@@ -60,9 +50,7 @@ namespace AttributeSniffer.analyzer.metrics
                 UNIQUE_ATTRIBUTES_IN_CLASS,
                 ATTRIBUTES_IN_ELEMENT_DECLARATION,
                 ARGUMENTS_IN_ATTRIBUTE,
-                LOC_IN_ATTRIBUTE_DECLARATION,
-                ATTRIBUTE_NESTING_LEVEL,
-                ATTRIBUTE_SCHEMAS_IN_CLASS
+                LOC_IN_ATTRIBUTE_DECLARATION
             };
         }
 
