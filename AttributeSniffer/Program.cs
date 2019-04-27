@@ -9,16 +9,42 @@ namespace AttributeSniffer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Path to analyze: ");
-            string pathToAnalyze = Console.ReadLine();
+            string pathToAnalyze = "";
+            string reportPath = "";
+            string reportType = "";
 
-            Console.WriteLine("Path to save the report: ");
-            string reportPath = Console.ReadLine();
+            if (args.Length >= 2)
+            {
+                pathToAnalyze = args[0];
+                reportPath = args[1];
 
-            Console.WriteLine("File type of the report [xml/json]:");
-            string reportType = Console.ReadLine();
+                if (args.Length > 2)
+                {
+                    reportType = args[2];
+                }
+            }
+            else
+            {
+                Console.WriteLine("Path to analyze: ");
+                pathToAnalyze = Console.ReadLine();
 
-            new AttributeSnifferRunner().Analyze(pathToAnalyze, reportPath, reportType);
+                Console.WriteLine("Path to save the report: ");
+                reportPath = Console.ReadLine();
+
+                Console.WriteLine("File type of the report [xml/json]:");
+                reportType = Console.ReadLine();
+            }
+
+
+            if (!String.IsNullOrEmpty(pathToAnalyze) && !String.IsNullOrEmpty(reportPath))
+            {
+                new AttributeSnifferRunner().Analyze(pathToAnalyze, reportPath, reportType);
+            }
+            else
+            {
+                Console.WriteLine("Provide a path to analyze the code and to save the report!");
+                Console.ReadLine();
+            }
         }
     }
 }
