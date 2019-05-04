@@ -63,7 +63,8 @@ namespace AttributeSniffer.analyzer
             return () =>
             {
                 string classContent = File.ReadAllText(file);
-                collectedMetrics.AddRange(metricsCollector.Collect(Path.GetFileName(file), classContent));
+                List<MetricResult> metricResults = metricsCollector.Collect(Path.GetFileName(file), classContent);
+                collectedMetrics.AddRange(metricResults);
                 logger.Trace("Finished collecting metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
             };
         }

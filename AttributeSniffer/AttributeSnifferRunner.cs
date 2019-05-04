@@ -12,34 +12,38 @@ namespace AttributeSniffer
     class AttributeSnifferRunner
     {
         /// <summary>
-        /// To be used by external access.
+        /// Analyze a single project.
         /// </summary>
         /// <param name="pathToAnalyze">path to the classes to analyze</param>
         /// <param name="reportPath">path to save the report</param>
         /// <param name="reportType">report's file type</param>
-        public void Analyze(string pathToAnalyze, string reportPath, string reportType)
+        public void AnalyzeSingle(string pathToAnalyze, string reportPath, string reportType)
         {
-            // Analyse project
+            // Analyze project
             ProjectReport projectReport = new Sniffer().Sniff(pathToAnalyze);
 
             // Process report and print to console
             string report = new Reporter().Report(projectReport, reportType, reportPath);
-            Console.WriteLine(report);
-            Console.ReadLine();
+            Console.WriteLine("Finished analyzing project: " + projectReport.ProjectName);
         }
 
         /// <summary>
-        /// To be used by unit testes.
+        /// Analyze multiple projects.
         /// </summary>
+        /// <param name="pathToAnalyze">path to the classes to analyze</param>
+        /// <param name="reportPath">path to save the report</param>
         /// <param name="reportType">report's file type</param>
-        public void Run(string reportType)
+        public void AnalyzeMulti(string pathToAnalyze, string reportPath, string reportType)
         {
-            // Get the current working directory
-            string currentWd = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\.."));
-            string pathToAnalyze = currentWd + Path.DirectorySeparatorChar + "example";
-            string reportPath = currentWd + Path.DirectorySeparatorChar + "report";
+            // Analyze multiple projects
+            string[] projectDirectories = Directory.GetDirectories(pathToAnalyze);
 
-            Analyze(pathToAnalyze, reportPath, reportType);
+            foreach(string projectDirectory in projectDirectories)
+            {
+                AnalyzeSingle(projectDirectory, reportPath, reportType);
+            }
         }
+
+
     }
 }

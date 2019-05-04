@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AttributeSniffer.analyzer.report
 {
@@ -40,7 +41,7 @@ namespace AttributeSniffer.analyzer.report
 
         public static ReportType GetReportType(string identifier)
         {
-            return GetReportTypes().Find(type => identifier.Equals(type.GetIdentifier()));
+            return GetReportTypes().Find(type => identifier.Equals(type.GetIdentifier(), StringComparison.OrdinalIgnoreCase));
         }
     }
 }
