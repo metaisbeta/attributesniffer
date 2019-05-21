@@ -37,9 +37,9 @@ The Attribute Sniffer was developed to validate Java annotations metrics on C# s
 
 ### Collected metrics
 
-* AC: Annotations in Class
-* UAC: Unique Annotations in Class
-* AED: Annotation in Element Declaration
-* AA: Attributes in Annotation
-* LOCAD: LOC in Annotation Declaration
+* AC: Attributes in Class
+* UAC: Unique Attributes in Class
+* AED: Attributes in Element Declaration
+* AA: Arguments in Attributes
+* LOCAD: LOC in Attribute Declaration
 
