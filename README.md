@@ -7,7 +7,7 @@ Attribute Sniffer is a tool that extracts code attribute metrics from C# source 
 ### How to use
 
 ```
-dotnet run -- project AttributeSniffer.csproj <path to project> <path to report> <single/multi> <report type>
+dotnet run --project AttributeSniffer.csproj <path to project> <path to report> <single/multi> <report type>
 ```
 
 The path must be a root folder that contains other projects directories, for the "multi" case. 
@@ -27,7 +27,9 @@ If the option "single" is used, then the path provided references only a single 
 
 For each project a report is generated. They will be placed on the provided "path to report".
 
-The last parameter is the report type, which can be either "XML" or "JSON". This is an optional parameter, with "JSON" being the default value.
+The last parameter is the report type, which can be either "XML" or "JSON". This is an optional parameter, with "JSON" being the default value. 
+
+If no paramter is provided, the Attribute Sniffer will prompt the user to enter them.
 
 Attribute Metrics
 ==================
