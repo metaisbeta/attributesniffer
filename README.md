@@ -33,7 +33,7 @@ Attribute Metrics
 ==================
 
 The Attribute Sniffer was developed to validate Java annotations metrics on C# source code. It collects 5 attribute metrics. The original metrics were proposed and defined in the the paper
-[A Metrics Suite for Code Annoation Assessment](https://www.sciencedirect.com/science/article/pii/S016412121730273X). This tool is part of an ongoing research about metadata configuration and comparions between Java annotations and C# source code.
+[A Metrics Suite for Code Annoation Assessment](https://www.sciencedirect.com/science/article/pii/S016412121730273X). This tool is part of an ongoing research regarding Java annotations and C# attributes.
 
 ### Collected metrics
 
