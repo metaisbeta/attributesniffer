@@ -11,6 +11,9 @@ namespace AttributeSniffer.analyzer.model
         public ElementIdentifier ElementIdentifier { get; set; }
 
         [JsonProperty]
+        public string MetricType { get; set; }
+
+        [JsonProperty]
         public string Metric { get; set; }
 
         [JsonProperty]
@@ -21,9 +24,10 @@ namespace AttributeSniffer.analyzer.model
             // For serialization
         }
 
-        public MetricResult(ElementIdentifier elementIdentifier, string metric, int result)
+        public MetricResult(ElementIdentifier elementIdentifier, string metricType, string metric, int result)
         {
             ElementIdentifier = elementIdentifier;
+            MetricType = metricType;
             Metric = metric;
             Result = result;
         }

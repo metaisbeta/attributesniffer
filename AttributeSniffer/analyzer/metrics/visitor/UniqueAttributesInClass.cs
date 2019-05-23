@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using AttributeSniffer.analyzer.metrics.model;
 using AttributeSniffer.analyzer.metrics.visitor.util;
 using AttributeSniffer.analyzer.model;
 using Microsoft.CodeAnalysis;
@@ -13,16 +15,21 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     class UniqueAttributesInClass : CSharpSyntaxWalker, MetricCollector
     {
         private SemanticModel SemanticModel { get; set; }
+        private string FilePath { get; set; }
         private List<AttributeSyntax> UniqueAttributes { get; set; } = new List<AttributeSyntax>();
-        private AttributeSyntax VisitedAttribute { get; set; }
+        private ElementIdentifier ElementIdentifier { get; set; }
 
         public override void VisitAttribute(AttributeSyntax node)
         {
-            VisitedAttribute = node;
             AttributeSyntax normalized = node.NormalizeWhitespace();
             if (!UniqueAttributes.Exists(attribute => attribute.IsEquivalentTo(normalized)))
             {
                 UniqueAttributes.Add(normalized);
+            }
+
+            if (ElementIdentifier == null)
+            {
+                ElementIdentifier = ElementIdentifierHelper.getElementIdentifierForClassMetrics(FilePath, SemanticModel, node);
             }
         }
 
@@ -31,16 +38,25 @@ namespace AttributeSniffer.analyzer.metrics.visitor
             this.SemanticModel = semanticModel;
         }
 
-        public void SetResult(List<MetricResult> metricResults)
+        public void SetFilePath(string filePath)
         {
-            metricResults.Add(GetResult());
+            this.FilePath = filePath;
         }
 
-        private MetricResult GetResult()
+        public void SetResult(List<MetricResult> metricResults)
         {
-            ElementIdentifier elementIdentifier = ElementIdentifierHelper.getElementIdentifierForClassMetrics(SemanticModel, VisitedAttribute.AncestorsAndSelf());
-            string metricName = Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
-            return new MetricResult(elementIdentifier, metricName, UniqueAttributes.Count);
+            if (ElementIdentifier != null)
+            {
+                string metricName = Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
+                string metricType = MetricType.CLASS_METRIC.GetIdentifier();
+                metricResults.Add(new MetricResult(ElementIdentifier, metricType, metricName, UniqueAttributes.Count));
+            }
+            
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(true);
         }
     }
 }

@@ -34,39 +34,44 @@ namespace AttributeSniffer.analyzer
             logger.Info("Starting to analyze path: {0}", folderPath);
 
             List<MetricResult> collectedMetrics = new List<MetricResult>();
-            List<Task> metricsCollectorTasks = new List<Task>();
 
             string[] csFiles = Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories);
-            foreach (string file in csFiles)
+            try
             {
-                metricsCollectorTasks.Add(Task.Factory.StartNew(CollectMetrics(metricsCollector, collectedMetrics, file)));
+                ParallelLoopResult parallelLoopResult = Parallel.ForEach(csFiles, (csFile) =>
+                {
+                    collectedMetrics.AddRange(CollectMetrics(metricsCollector, csFile));
+                });
+
+                logger.Info("Finished analyzing all files of path: {0}", folderPath);
+
+                collectedMetrics.RemoveAll(metric => metric == null);
+                List<MetricResult> acMetrics = collectedMetrics.FindAll(metric => metric.Metric.Equals(Metric.ATTRIBUTES_IN_CLASS.GetIdentifier()));
+                int numberOfAttributes = acMetrics.Sum(ac => ac.Result);
+
+                return new ProjectReport(GetProjectName(folderPath), csFiles.Count(), acMetrics.Count, numberOfAttributes, collectedMetrics.OrderBy(metric => metric.Metric).ToList());
             }
-
-            Task.WaitAll(metricsCollectorTasks.ToArray());
-            logger.Info("Finished analyzing all files of path: {0}", folderPath);
-
-            List<MetricResult> acMetrics = collectedMetrics.FindAll(metric => metric.Metric.Equals(Metric.ATTRIBUTES_IN_CLASS.GetIdentifier()));
-            int numberOfAttributes = acMetrics.Sum(ac => ac.Result);
-
-            return new ProjectReport(GetProjectName(folderPath), csFiles.Count(), acMetrics.Count, numberOfAttributes, collectedMetrics.OrderBy(metric => metric.Metric).ToList());
+            catch (Exception ex)
+            {
+                logger.Fatal(ex, "Error collecting metrics");
+                throw ex;
+            }
         }
 
         /// <summary>
-        /// Action responsible to collect metrics.
+        /// Collect metrics.
         /// </summary>
         /// <param name="metricsCollector">Metrics collector component.</param>
-        /// <param name="collectedMetrics">List of metrics.</param>
         /// <param name="file">File to be analyzed.</param>
         /// <returns>Collecting metrics Action.</returns>
-        private Action CollectMetrics(MetricsCollector metricsCollector, List<MetricResult> collectedMetrics, string file)
-        {
-            return () =>
-            {
-                string classContent = File.ReadAllText(file);
-                List<MetricResult> metricResults = metricsCollector.Collect(Path.GetFileName(file), classContent);
-                collectedMetrics.AddRange(metricResults);
-                logger.Trace("Finished collecting metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
-            };
+        private List<MetricResult> CollectMetrics(MetricsCollector metricsCollector, string file)
+        { 
+            logger.Trace("Starting to collect metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
+            string classContent = File.ReadAllText(file);
+            List<MetricResult> metricResults = metricsCollector.Collect(Path.GetFullPath(file), classContent);
+            logger.Trace("Finished collecting metrics for file '{0}' at thread {1} ", file, Thread.CurrentThread.ManagedThreadId);
+
+            return metricResults;
         }
 
         /// <summary>

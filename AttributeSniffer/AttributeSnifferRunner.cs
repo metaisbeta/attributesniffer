@@ -20,6 +20,7 @@ namespace AttributeSniffer
         public void AnalyzeSingle(string pathToAnalyze, string reportPath, string reportType)
         {
             // Analyze project
+            Console.WriteLine("Starting to analyze project at path: " + pathToAnalyze);
             ProjectReport projectReport = new Sniffer().Sniff(pathToAnalyze);
 
             // Process report and print to console

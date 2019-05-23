@@ -7,6 +7,11 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
     struct ElementIdentifierType
     {
         // Element types
+        public static ElementIdentifierType CS_FILE_TYPE
+        {
+            get { return new ElementIdentifierType(null, "csFile", "csFile"); }
+        }
+
         public static ElementIdentifierType ASSEMBLY_TYPE
         {
             get { return new ElementIdentifierType(null, "assembly", "Assembly"); }
@@ -37,6 +42,11 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             get { return new ElementIdentifierType(typeof(EnumDeclarationSyntax), "type", "Enum"); }
         }
 
+        public static ElementIdentifierType DELEGATE_TYPE
+        {
+            get { return new ElementIdentifierType(typeof(DelegateDeclarationSyntax), "type", "Delegate"); }
+        }
+
         public static ElementIdentifierType METHOD_TYPE
         {
             get { return new ElementIdentifierType(typeof(MethodDeclarationSyntax), "method", "Method"); }
@@ -54,12 +64,17 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
 
         public static ElementIdentifierType FIELD_TYPE
         {
-            get { return new ElementIdentifierType(typeof(VariableDeclaratorSyntax), "field", "Field"); }
+            get { return new ElementIdentifierType(typeof(FieldDeclarationSyntax), "field", "Field"); }
         }
 
         public static ElementIdentifierType PARAMETER_TYPE
         {
             get { return new ElementIdentifierType(typeof(ParameterSyntax), "param", "Parameter"); }
+        }
+
+        public static ElementIdentifierType TYPE_PARAMETER_TYPE
+        {
+            get { return new ElementIdentifierType(typeof(TypeParameterSyntax), "typevar", "Typevar"); }
         }
 
         public static ElementIdentifierType RETURN_TYPE
@@ -86,6 +101,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
         {
             return new List<ElementIdentifierType>
             {
+                CS_FILE_TYPE,
                 ASSEMBLY_TYPE,
                 MODULE_TYPE,
                 STRUCT_TYPE,
@@ -97,6 +113,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                 PROPERTY_TYPE,
                 FIELD_TYPE,
                 PARAMETER_TYPE,
+                TYPE_PARAMETER_TYPE,
                 RETURN_TYPE
             };
         }

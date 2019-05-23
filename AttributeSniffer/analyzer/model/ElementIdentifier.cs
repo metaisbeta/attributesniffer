@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace AttributeSniffer.analyzer.model
 {
     /// <summary>
-    /// Represents a element identifier. Includes the element name (with its namespace), type and the line number.
+    /// Represents a element identifier. Includes the element name (with its namespace), type, the line number and the file declaration's path.
     /// </summary>
     public class ElementIdentifier
     {
@@ -19,16 +17,20 @@ namespace AttributeSniffer.analyzer.model
         [JsonProperty]
         public int LineNumber { get; set; }
 
+        [JsonProperty]
+        public string FileDeclarationPath { get; set; }
+
         public ElementIdentifier()
         {
             // For serialization
         }
 
-        public ElementIdentifier(string elementName, string elementType, int lineNumber)
+        public ElementIdentifier(string elementName, string elementType, int lineNumber, string fileDeclarationPath)
         {
             ElementName = elementName;
             ElementType = elementType;
             LineNumber = lineNumber;
+            FileDeclarationPath = fileDeclarationPath;
         }
 
         public override bool Equals(object obj)
@@ -37,12 +39,13 @@ namespace AttributeSniffer.analyzer.model
             return identifier != null &&
                    ElementName == identifier.ElementName &&
                    ElementType == identifier.ElementType &&
-                   LineNumber == identifier.LineNumber;
+                   LineNumber == identifier.LineNumber &&
+                   FileDeclarationPath == identifier.FileDeclarationPath;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ElementName, ElementType, LineNumber);
+            return HashCode.Combine(ElementName, ElementType, LineNumber, FileDeclarationPath);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AttributeSniffer.analyzer.metrics;
 using AttributeSniffer.analyzer.model;
@@ -25,15 +26,17 @@ namespace AttributeSniffer.analyzer
         {
             SyntaxTree tree = CSharpSyntaxTree.ParseText(classContent);
             CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
-            SemanticModel semanticModel = getSemanticModel(fileName, tree);
+            SemanticModel semanticModel = getSemanticModel(Path.GetFileName(fileName), tree);
             List<MetricResult> metricsResults = new List<MetricResult>();
 
             // Collect metrics
             foreach (var metric in GetAllMetrics())
             {
                 metric.SetSemanticModel(semanticModel);
+                metric.SetFilePath(fileName);
                 ((CSharpSyntaxWalker)metric).Visit(root);
                 metric.SetResult(metricsResults);
+                metric.Dispose();
             }
 
             return metricsResults;

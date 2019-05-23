@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AttributeSniffer.analyzer.model;
+using AttributeSniffer.analyzer.model.exception;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,83 +11,98 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
 {
     public class ElementIdentifierHelper
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private const string identifierFormat = "{0}#{1}";
         private const string attributeType = "Attribute";
 
-        public static ElementIdentifier getElementIdentifierForClassMetrics(SemanticModel semanticModel, IEnumerable<SyntaxNode> ancestorsAndASelfNodes)
+        public static ElementIdentifier getElementIdentifierForClassMetrics(string filePath, SemanticModel semanticModel, AttributeSyntax attribute)
         {
-            SyntaxNode targetElement = ancestorsAndASelfNodes
-                .Where(node => node.GetType() == typeof(StructDeclarationSyntax)
-                    || node.GetType() == typeof(ClassDeclarationSyntax)
-                    || node.GetType() == typeof(InterfaceDeclarationSyntax)
-                    || node.GetType() == typeof(EnumDeclarationSyntax))
-                .Last();
-
-            ITypeSymbol targetElementSymbol = (ITypeSymbol)semanticModel.GetDeclaredSymbol(targetElement);
-
-            string elementType = ElementIdentifierType.GetElementByType(targetElement.GetType()).GetTypeIdentifier();
-            string elementIdentifier = targetElementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
-            int lineNumber = semanticModel.SyntaxTree.GetLineSpan(targetElement.Span).StartLinePosition.Line + 1;
-
-            return new ElementIdentifier(elementIdentifier, elementType, lineNumber);
+            string elementType = ElementIdentifierType.CS_FILE_TYPE.GetTypeIdentifier();
+            return new ElementIdentifier("", elementType, 0, filePath);
         }
 
-        public static ElementIdentifier getElementIdentifierForAttributeMetrics(SemanticModel semanticModel, AttributeSyntax node)
+        public static List<ElementIdentifier> getElementIdentifiersForAttributeMetrics(string filePath, SemanticModel semanticModel, AttributeSyntax node)
         {
-            ElementIdentifier targetElementIdenfier = getElementIdentifierForElementMetrics(semanticModel, (AttributeListSyntax)node.Parent);
-            targetElementIdenfier.ElementName += "#" + node.Name;
-            targetElementIdenfier.ElementType = attributeType;
-            targetElementIdenfier.LineNumber = semanticModel.SyntaxTree.GetLineSpan(node.Span).StartLinePosition.Line + 1;
+            List<ElementIdentifier> targetElementIdentifiers = getElementIdentifiersForElementMetrics(filePath, semanticModel, (AttributeListSyntax)node.Parent);
+            int lineNumber = semanticModel.SyntaxTree.GetLineSpan(node.Span).StartLinePosition.Line + 1;
+            targetElementIdentifiers.ForEach(identifier =>
+            {
+                identifier.ElementName += "#" + node.Name;
+                identifier.ElementType = attributeType;
+                identifier.LineNumber = lineNumber;
+            });
 
-            return targetElementIdenfier;
+            return targetElementIdentifiers;
         }
 
-        public static ElementIdentifier getElementIdentifierForElementMetrics(SemanticModel semanticModel, AttributeListSyntax node)
+        public static List<ElementIdentifier> getElementIdentifiersForElementMetrics(String filePath, SemanticModel semanticModel, AttributeListSyntax node)
         {
+            List<ElementIdentifier> elementIdentifiers = new List<ElementIdentifier>();
             string elementType = "";
             string elementIdentifier = "";
             int lineNumber = 0;
             SyntaxNode attributeTargetNode = null;
-            List<ElementIdentifier> elementIdentifiers = new List<ElementIdentifier>();
             AttributeTargetSpecifierSyntax target = node.Target;
 
-            if (target != null)
-            {
-                List<ElementIdentifierType> elementPossibleTypes = ElementIdentifierType.GetElementsByTarget(target.Identifier.Text);
-
-                if (elementPossibleTypes.Count > 1)
+            try {
+                if (target != null)
                 {
-                    // Possible targets for type target: class, struct, interface or enum.
-                    attributeTargetNode = node.Ancestors()
-                        .Where(ancestor => elementPossibleTypes.Select(type => type.GetElementType()).Contains(ancestor.GetType()))
-                        .First();
-                    ElementIdentifierType elementIdentifierType = elementPossibleTypes
-                        .Where(type => type.GetElementType() == attributeTargetNode.GetType())
-                        .First();
-                    elementType = elementIdentifierType.GetTypeIdentifier();
-                }
-                else
-                {
-                    ElementIdentifierType elementIdentifierType = elementPossibleTypes.First();
-                    elementType = elementIdentifierType.GetTypeIdentifier();
+                    List<ElementIdentifierType> elementPossibleTypes = ElementIdentifierType.GetElementsByTarget(target.Identifier.Text);
 
-                    if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.RETURN_TYPE.GetElementTarget())
+                    if (elementPossibleTypes.Count > 1)
                     {
-                        Tuple<string, int> fieldInformation = GetIdentifierForReturnStatement(semanticModel, (MethodDeclarationSyntax)node.Parent);
-                        elementIdentifier = fieldInformation.Item1;
-                        lineNumber = fieldInformation.Item2;
+                        // Possible targets for type target: class, struct, interface, enum or delegate.
+                        attributeTargetNode = node.Ancestors()
+                            .Where(ancestor => elementPossibleTypes.Select(type => type.GetElementType()).Contains(ancestor.GetType()))
+                            .First();
+                        ElementIdentifierType elementIdentifierType = elementPossibleTypes
+                            .Where(type => type.GetElementType() == attributeTargetNode.GetType())
+                            .First();
                         elementType = elementIdentifierType.GetTypeIdentifier();
-                    } else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.ASSEMBLY_TYPE.GetElementTarget())
+                    }
+                    else
                     {
-                        elementIdentifier = semanticModel.Compilation.AssemblyName;
-                    } else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.MODULE_TYPE.GetElementTarget())
-                    {
-                        elementIdentifier = semanticModel.Compilation.SourceModule.Name;
-                    } else
-                    {
-                        attributeTargetNode = node.Ancestors().Where(ancestor => elementIdentifierType.GetElementType().Equals(ancestor.GetType())).First();
+                        ElementIdentifierType elementIdentifierType = elementPossibleTypes.First();
+                        elementType = elementIdentifierType.GetTypeIdentifier();
+
+                        if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.RETURN_TYPE.GetElementTarget())
+                        {
+                            Tuple<string, int> fieldInformation = GetIdentifierForReturnStatement(semanticModel, node.Parent);
+                            elementIdentifier = fieldInformation.Item1;
+                            lineNumber = fieldInformation.Item2;
+                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
+                        }
+                        else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.ASSEMBLY_TYPE.GetElementTarget())
+                        {
+                            elementIdentifier = semanticModel.Compilation.AssemblyName;
+                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
+                        }
+                        else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.MODULE_TYPE.GetElementTarget())
+                        {
+                            elementIdentifier = semanticModel.Compilation.SourceModule.Name;
+                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
+                        }
+                        else
+                        {
+                            var typeAncestors = node.Ancestors().Where(ancestor => elementIdentifierType.GetElementType().Equals(ancestor.GetType())).ToList();
+
+                            if (typeAncestors.IsEmpty())
+                            {
+                                attributeTargetNode = node.Parent;
+                            }
+                            else
+                            {
+                                attributeTargetNode = node.Ancestors().Where(ancestor => elementIdentifierType.GetElementType().Equals(ancestor.GetType())).First();
+                            }
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                logger.Fatal(e, "Error while extracting target at file {0}", filePath);
+                throw new FatalElementIdentifierException("Error extracting target of attribute.");
             }
 
             if (elementType != ElementIdentifierType.RETURN_TYPE.GetTypeIdentifier()
@@ -98,15 +114,30 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                     attributeTargetNode = node.Parent;
                 }
 
-                if (attributeTargetNode.GetType() == typeof(FieldDeclarationSyntax))
+                if (attributeTargetNode.GetType() == typeof(IncompleteMemberSyntax)
+                    || attributeTargetNode.GetType() == typeof(AccessorDeclarationSyntax))
                 {
-                    Tuple<string, int> fieldInformation = GetIdentifierForFieldDeclaration(semanticModel, (FieldDeclarationSyntax)attributeTargetNode);
-                    elementIdentifier = fieldInformation.Item1;
-                    lineNumber = fieldInformation.Item2;
+                    logger.Error("File {0} contains an {1} at its struct.", filePath, attributeTargetNode.GetType().ToString());
+                    throw new IgnoreElementIdentifierException("Syntax error");
+                }
+
+                if (attributeTargetNode.GetType() == typeof(FieldDeclarationSyntax) 
+                    || attributeTargetNode.GetType() == typeof(EventFieldDeclarationSyntax))
+                {
+                    elementType = ElementIdentifierType.GetElementByType(attributeTargetNode.GetType()).GetTypeIdentifier();
+                    Dictionary<string, int> fieldInformations = GetIdentifierForFieldDeclaration(semanticModel, (BaseFieldDeclarationSyntax)attributeTargetNode);
+
+                    fieldInformations.ForEach(info => elementIdentifiers.Add(new ElementIdentifier(info.Key, elementType, info.Value, filePath)));                   
                 }
                 else
                 {
                     ISymbol targetSymbol = semanticModel.GetDeclaredSymbol(attributeTargetNode);
+
+                    if (targetSymbol == null)
+                    {
+                        logger.Fatal("Error getting symbol in file {0} for {1} type", filePath, attributeTargetNode.GetType().ToString());
+                        throw new FatalElementIdentifierException("Error getting semantic model symbol.");
+                    }
 
                     if (attributeTargetNode.GetType() == typeof(ParameterSyntax))
                     {
@@ -116,11 +147,13 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                     {
                         elementIdentifier = targetSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
                     }
+                    elementType = ElementIdentifierType.GetElementByType(attributeTargetNode.GetType()).GetTypeIdentifier();
                     lineNumber = semanticModel.SyntaxTree.GetLineSpan(attributeTargetNode.Span).StartLinePosition.Line + 1;
+                    elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
                 }
             }
 
-            return new ElementIdentifier(elementIdentifier, elementType, lineNumber);
+            return elementIdentifiers;
         }
 
         private static string GetIdentifierForParameterSyntax(IParameterSymbol parameterSymbol)
@@ -128,27 +161,32 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             return string.Format(identifierFormat, parameterSymbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat), parameterSymbol.Name);
         }
 
-        private static Tuple<string, int> GetIdentifierForReturnStatement(SemanticModel semanticModel, MethodDeclarationSyntax returnParent)
+        private static Tuple<string, int> GetIdentifierForReturnStatement(SemanticModel semanticModel, SyntaxNode returnParent)
         {
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(returnParent);
-            string parentIdentifier = methodSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(returnParent);
+            string parentIdentifier = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
             string elementIdentifier = string.Format(identifierFormat, parentIdentifier, ElementIdentifierType.RETURN_TYPE.GetTypeIdentifier());
             int lineNumber = semanticModel.SyntaxTree.GetLineSpan(returnParent.Span).StartLinePosition.Line + 1;
 
             return Tuple.Create(elementIdentifier, lineNumber);
         }
 
-        private static Tuple<string, int> GetIdentifierForFieldDeclaration(SemanticModel semanticModel, FieldDeclarationSyntax fieldNode)
+        private static Dictionary<string, int> GetIdentifierForFieldDeclaration(SemanticModel semanticModel, BaseFieldDeclarationSyntax fieldNode)
         {
+            Dictionary<string, int> fieldIdentifiers = new Dictionary<string, int>();
             SeparatedSyntaxList<VariableDeclaratorSyntax> variables = fieldNode.Declaration.Variables;
-            List<string> varNames = variables.Select(variable => variable.Identifier.Text).ToList();
 
-            ISymbol elementSymbol = semanticModel.GetDeclaredSymbol(variables[0]);
-            string identifier = elementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
-            string elementIdentifier = identifier.Remove(identifier.LastIndexOf(".") + 1) + String.Join(".", varNames.ToArray());
-            int lineNumber = semanticModel.SyntaxTree.GetLineSpan(variables.First().Span).StartLinePosition.Line + 1;
+            foreach(VariableDeclaratorSyntax variable in variables)
+            {
+                ISymbol elementSymbol = semanticModel.GetDeclaredSymbol(variable);
+                string identifier = elementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+                string elementIdentifier = identifier.Remove(identifier.LastIndexOf(".") + 1) + variable.Identifier.Text;
+                int lineNumber = semanticModel.SyntaxTree.GetLineSpan(variables.First().Span).StartLinePosition.Line + 1;
+                fieldIdentifiers.Add(identifier, lineNumber);
+            }
 
-            return Tuple.Create(elementIdentifier, lineNumber);
+            return fieldIdentifiers;
         }
 
     }
