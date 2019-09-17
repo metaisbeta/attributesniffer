@@ -7,7 +7,7 @@ Attribute Sniffer is a tool that extracts code attribute metrics from C# source 
 ### How to use
 
 ```
-dotnet run --project AttributeSniffer.csproj <path to project> <path to report> <single/multi> <report type>
+dotnet run AttributeSniffer.csproj <path to project> <path to report> <single/multi> <report type>
 ```
 
 The path must be a root folder that contains other projects directories, for the "multi" case. 
