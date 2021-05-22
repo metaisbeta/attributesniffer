@@ -1,3 +1,5 @@
+[![ASniffer-Actions-Build](https://github.com/LydiaBraga/AttributeSniffer/workflows/AttributeSniffer/badge.svg)](https://github.com/LydiaBraga/AttributeSniffer/actions)
+
 Attribute Sniffer
 ==================
 
