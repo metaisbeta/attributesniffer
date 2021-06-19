@@ -3,7 +3,9 @@
 Attribute Sniffer
 ==================
 
-Attribute Sniffer is a tool that extracts code attribute metrics from C# source code. It derives from the [Annotation Sniffer](https://github.com/phillima/asniffer). 
+Attribute Sniffer is a tool that extracts code attribute metrics from C# source code. It derives from the [Annotation Sniffer](https://github.com/metaisbeta/asniffer). 
+
+It was published on tools section of [CBSoft 2019](https://sol.sbc.org.br/index.php/cbsoft_estendido/article/view/7664)
 
 
 ### How to use
