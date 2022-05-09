@@ -8,24 +8,42 @@ namespace AttributeSniffer.analyzer.metrics
     public struct Metric
     {
         // Metrics
+        //Class
         public static Metric ATTRIBUTES_IN_CLASS
         {
             get { return new Metric("AC"); }
+        } 
+        //Namespace
+        public static Metric NAMESPACES_IN_CLASS
+        {
+            get { return new Metric("NIC"); }
         }
 
         public static Metric UNIQUE_ATTRIBUTES_IN_CLASS
         {
             get { return new Metric("UAC"); }
+        }         
+        public static Metric ATTRIBUTES_SCHEMA_IN_CLASS
+        {//add
+            get { return new Metric("ASC"); }
         }
-
+        public static Metric NUMBER_ATTRIBUTES_IN_CLASS
+        {//add
+            get { return new Metric("NAEC"); }
+        }
+        //Code
         public static Metric ATTRIBUTES_IN_ELEMENT_DECLARATION
         {
             get { return new Metric("AED"); }
         }
-
+        //Attributes
         public static Metric ARGUMENTS_IN_ATTRIBUTE
         {
             get { return new Metric("AA"); }
+        }
+        public static Metric ATTRIBUTES_NESTING_LEVEL
+        {//add
+            get { return new Metric("ANL"); }
         }
 
         public static Metric LOC_IN_ATTRIBUTE_DECLARATION
@@ -50,7 +68,10 @@ namespace AttributeSniffer.analyzer.metrics
                 UNIQUE_ATTRIBUTES_IN_CLASS,
                 ATTRIBUTES_IN_ELEMENT_DECLARATION,
                 ARGUMENTS_IN_ATTRIBUTE,
-                LOC_IN_ATTRIBUTE_DECLARATION
+                LOC_IN_ATTRIBUTE_DECLARATION,
+                ATTRIBUTES_SCHEMA_IN_CLASS,
+                NUMBER_ATTRIBUTES_IN_CLASS,
+                ATTRIBUTES_NESTING_LEVEL
             };
         }
 

@@ -21,4 +21,18 @@ namespace AttributeSniffer.example.classes
         {
         }
     }
+    [Attribute1]
+    class ClassTeste1
+    {
+        [Attribute2]
+        [Attribute2]
+        public void teste3()
+        {
+        }
+
+        [Attribute2]
+        public void teste4()
+        {
+        }
+    }
 }

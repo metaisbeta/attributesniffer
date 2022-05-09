@@ -13,7 +13,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     /// <summary>
     /// Visit a compilation unit to extract the AED metric.
     /// </summary>
-    class AttributesInElementDeclaration : CSharpSyntaxWalker, MetricCollector
+    class AttributesInElementDeclaration : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

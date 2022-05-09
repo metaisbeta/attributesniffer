@@ -13,7 +13,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     /// <summary>
     /// Visit a compilation unit to extract the AA metric.
     /// </summary>
-    class ArgumentsInAttribute : CSharpSyntaxWalker, MetricCollector
+    class ArgumentsInAttribute : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -22,7 +22,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         private int NumberOfArguments { get; set; }
         private AttributeSyntax VisitedAttribute { get; set; }
         private List<MetricResult> ResultsByElement { get; set; } = new List<MetricResult>();
-
+     
         public override void VisitAttribute(AttributeSyntax node)
         {
             this.VisitedAttribute = node;

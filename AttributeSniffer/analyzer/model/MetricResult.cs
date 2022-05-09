@@ -18,7 +18,7 @@ namespace AttributeSniffer.analyzer.model
 
         [JsonProperty]
         public int Result { get; set; }
-
+              
         public MetricResult()
         {
             // For serialization

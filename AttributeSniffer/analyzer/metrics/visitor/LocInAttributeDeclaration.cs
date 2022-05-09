@@ -13,7 +13,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     /// <summary>
     /// Visit a compilation unit to extract the LOCAD metric.
     /// </summary>
-    class LocInAttributeDeclaration : CSharpSyntaxWalker, MetricCollector
+    class LocInAttributeDeclaration : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

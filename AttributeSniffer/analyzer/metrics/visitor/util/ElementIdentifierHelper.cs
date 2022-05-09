@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AttributeSniffer.analyzer.model;
 using AttributeSniffer.analyzer.model.exception;
 using Microsoft.CodeAnalysis;
@@ -45,7 +46,8 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             SyntaxNode attributeTargetNode = null;
             AttributeTargetSpecifierSyntax target = node.Target;
 
-            try {
+            try
+            {
                 if (target != null)
                 {
                     List<ElementIdentifierType> elementPossibleTypes = ElementIdentifierType.GetElementsByTarget(target.Identifier.Text);
@@ -121,13 +123,13 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                     throw new IgnoreElementIdentifierException("Syntax error");
                 }
 
-                if (attributeTargetNode.GetType() == typeof(FieldDeclarationSyntax) 
+                if (attributeTargetNode.GetType() == typeof(FieldDeclarationSyntax)
                     || attributeTargetNode.GetType() == typeof(EventFieldDeclarationSyntax))
                 {
                     elementType = ElementIdentifierType.GetElementByType(attributeTargetNode.GetType()).GetTypeIdentifier();
                     Dictionary<string, int> fieldInformations = GetIdentifierForFieldDeclaration(semanticModel, (BaseFieldDeclarationSyntax)attributeTargetNode);
 
-                    fieldInformations.ForEach(info => elementIdentifiers.Add(new ElementIdentifier(info.Key, elementType, info.Value, filePath)));                   
+                    fieldInformations.ForEach(info => elementIdentifiers.Add(new ElementIdentifier(info.Key, elementType, info.Value, filePath)));
                 }
                 else
                 {
@@ -156,6 +158,76 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             return elementIdentifiers;
         }
 
+        public static List<ElementIdentifier> getElementIdentifiersForNamespaceMetrics(string filePath, SemanticModel semanticModel, List<SyntaxNode> listNode, AttributeSyntax attribute)
+        {
+            List<ElementIdentifier> targetElementIdentifiers = new List<ElementIdentifier>();
+
+            //se tiver so 1 using e 1 attribute add
+            //(((CompilationUnitSyntax)node.Parent)?.AttributeLists.Count == 1)
+            if (listNode.Count == 1 && listNode.FirstOrDefault().Parent?.DescendantNodes().OfType<AttributeSyntax>().ToList().Count == 1)
+            {
+                targetElementIdentifiers.Add(new ElementIdentifier
+                {
+                    FileDeclarationPath = filePath,
+                    ElementName = "#" + ((UsingDirectiveSyntax)listNode.FirstOrDefault()).Name,
+                    ElementType = ElementIdentifierType.GetElementByType(listNode.FirstOrDefault().GetType()).GetTypeIdentifier()
+                });
+
+                int lineNumber = semanticModel.SyntaxTree.GetLineSpan(listNode.FirstOrDefault().Span).StartLinePosition.Line + 1;
+                targetElementIdentifiers.ForEach(identifier =>
+                {
+                    identifier.LineNumber = lineNumber;
+                });
+            }
+            else
+            {
+                //recupero type da compilacao pelo atributo
+                //Validar todos os tipos de attributes - class/unique .....
+                var typeCompilation = semanticModel.GetTypeInfo(attribute);
+                var attributeName = typeCompilation.Type.MetadataName;
+                var attributeDefinitionClass = typeCompilation.Type.OriginalDefinition;
+
+                //validar quando erro - salvar namespaces ??
+                if (!attributeDefinitionClass.ToString().Contains("."))
+                {
+                    //o q fazer quando der erro ??? -- ErrorType
+                    foreach (var item in listNode)
+                    {
+                        SemanticModel semanticModel1;
+                        semanticModel.TryGetSpeculativeSemanticModel(1, attribute, out semanticModel1);
+                        var teste = typeCompilation.Type?.GetAttributes().FirstOrDefault(x => x.AttributeClass.MetadataName == attributeName);
+                    }
+
+                }
+                targetElementIdentifiers.Add(new ElementIdentifier
+                {
+                    FileDeclarationPath = filePath,
+                    ElementName = "#" + attributeDefinitionClass.ToString().Replace("." + attributeName, ""),
+                    ElementType = ElementIdentifierType.NAMESPACE_TYPE.GetTypeIdentifier()
+                });
+
+                var namespaceDefinition = string.Empty;
+                var specifiedNode = (UsingDirectiveSyntax)listNode.FirstOrDefault();
+                foreach (var node in listNode)
+                {
+                    var possibleMatch = Regex.Match(attributeDefinitionClass.ToString().Replace("." + attributeName, ""), ((UsingDirectiveSyntax)node).Name.ToString());
+                    if ((possibleMatch.Success) && possibleMatch?.Value?.Split(".").Count() >= namespaceDefinition.Split(".").Count())
+                    {
+                        namespaceDefinition = possibleMatch.Value;
+                        specifiedNode = (UsingDirectiveSyntax)listNode.FirstOrDefault(x => ((UsingDirectiveSyntax)x).Name.ToString() == namespaceDefinition);
+                    }
+                }
+
+
+                int lineNumber = semanticModel.SyntaxTree.GetLineSpan(specifiedNode.Span).StartLinePosition.Line + 1;
+                targetElementIdentifiers.ForEach(identifier =>
+                {
+                    identifier.LineNumber = lineNumber;
+                });
+            }
+            return targetElementIdentifiers;
+        }
+
         private static string GetIdentifierForParameterSyntax(IParameterSymbol parameterSymbol)
         {
             return string.Format(identifierFormat, parameterSymbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat), parameterSymbol.Name);
@@ -177,7 +249,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             Dictionary<string, int> fieldIdentifiers = new Dictionary<string, int>();
             SeparatedSyntaxList<VariableDeclaratorSyntax> variables = fieldNode.Declaration.Variables;
 
-            foreach(VariableDeclaratorSyntax variable in variables)
+            foreach (VariableDeclaratorSyntax variable in variables)
             {
                 ISymbol elementSymbol = semanticModel.GetDeclaredSymbol(variable);
                 string identifier = elementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);

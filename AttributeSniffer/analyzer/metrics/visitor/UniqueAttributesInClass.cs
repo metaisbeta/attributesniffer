@@ -12,7 +12,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
     /// <summary>
     /// Visit a compilation unit to extract the UAC metric.
     /// </summary>
-    class UniqueAttributesInClass : CSharpSyntaxWalker, MetricCollector
+    class UniqueAttributesInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private SemanticModel SemanticModel { get; set; }
         private string FilePath { get; set; }

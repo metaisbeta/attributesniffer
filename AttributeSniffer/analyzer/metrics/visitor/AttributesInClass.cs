@@ -12,7 +12,7 @@ namespace AttributeSniffer.analyzer.metrics
     /// <summary>
     /// Visit a compilation unit to extract the AC metric.
     /// </summary>
-    class AttributesInClass : CSharpSyntaxWalker, MetricCollector
+    class AttributesInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private SemanticModel SemanticModel { get; set; }
         private string FilePath { get; set; }

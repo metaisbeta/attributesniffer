@@ -46,14 +46,14 @@ namespace AttributeSniffer.analyzer
         /// Get all the Metrics which implement the <c>MetricCollector</c> interface.
         /// </summary>
         /// <returns>List of all the metrics.</returns>
-        private List<MetricCollector> GetAllMetrics()
+        private List<IMetricCollector> GetAllMetrics()
         {
-            Type metrictCollectorType = typeof(MetricCollector);
+            Type metrictCollectorType = typeof(IMetricCollector);
 
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => metrictCollectorType.IsAssignableFrom(type) && !type.IsInterface)
-                .Select(type => (MetricCollector)Activator.CreateInstance(type))
+                .Select(type => (IMetricCollector)Activator.CreateInstance(type))
                 .ToList();
         }
 

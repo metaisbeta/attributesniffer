@@ -80,6 +80,10 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
         public static ElementIdentifierType RETURN_TYPE
         {
             get { return new ElementIdentifierType(typeof(ReturnStatementSyntax), "return", "Return"); }
+        } 
+        public static ElementIdentifierType NAMESPACE_TYPE
+        {
+            get { return new ElementIdentifierType(typeof(UsingDirectiveSyntax), "namespace", "Namespace"); }
         }
 
         private Type type;
@@ -114,7 +118,8 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                 FIELD_TYPE,
                 PARAMETER_TYPE,
                 TYPE_PARAMETER_TYPE,
-                RETURN_TYPE
+                RETURN_TYPE,
+                NAMESPACE_TYPE
             };
         }
 

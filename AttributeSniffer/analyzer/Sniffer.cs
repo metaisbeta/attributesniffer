@@ -38,11 +38,14 @@ namespace AttributeSniffer.analyzer
             string[] csFiles = Directory.GetFiles(folderPath, "*.cs", SearchOption.AllDirectories);
             try
             {
-                ParallelLoopResult parallelLoopResult = Parallel.ForEach(csFiles, (csFile) =>
+                //ParallelLoopResult parallelLoopResult = Parallel.ForEach(csFiles, (csFile) =>
+                //{
+                //    collectedMetrics.AddRange(CollectMetrics(metricsCollector, csFile));
+                //});
+                foreach (var csFile in csFiles)
                 {
-                    collectedMetrics.AddRange(CollectMetrics(metricsCollector, csFile));
-                });
-
+                     collectedMetrics.AddRange(CollectMetrics(metricsCollector, csFile));
+                }
                 logger.Info("Finished analyzing all files of path: {0}", folderPath);
 
                 collectedMetrics.RemoveAll(metric => metric == null);
