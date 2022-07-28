@@ -22,13 +22,16 @@ namespace AttributeSniffer.analyzer.metrics.visitor
 
         private List<MetricResult> ResultsByElement { get; set; } = new List<MetricResult>();
 
+        private static Dictionary<string, (string, int)> NamespacesSaved = new Dictionary<string, (string, int)>();
+
+
         public override void Visit(SyntaxNode node)
         {
             List<MetricResult> metricResults = new List<MetricResult>();
 
-            this.NumberOfArguments = node.DescendantNodes().Where(a => a is UsingDirectiveSyntax).ToList().Count();
+            
             metricResults = GetResults(node);
-
+            this.NumberOfArguments = metricResults.Count;
             if (metricResults.Count != 0)
             {
                 ResultsByElement.AddRange(metricResults);
@@ -44,7 +47,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
                 foreach (var item in syntaxNode.DescendantNodes().Where(x => x is AttributeSyntax).ToList())
                 {                    
                      List<ElementIdentifier> elementIdentifiers = ElementIdentifierHelper.getElementIdentifiersForNamespaceMetrics(FilePath,
-                        SemanticModel, syntaxNode.DescendantNodes().Where(a => a is UsingDirectiveSyntax).ToList(), (AttributeSyntax)item);
+                        SemanticModel, syntaxNode.DescendantNodes().Where(a => a is UsingDirectiveSyntax).ToList(), (AttributeSyntax)item, NamespacesSaved);
                     //usings
                     string metricName = Metric.NAMESPACES_IN_CLASS.GetIdentifier();
                     string metricType = MetricType.ELEMENT_METRIC.GetIdentifier();

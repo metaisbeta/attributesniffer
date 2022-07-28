@@ -158,76 +158,70 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             return elementIdentifiers;
         }
 
-        public static List<ElementIdentifier> getElementIdentifiersForNamespaceMetrics(string filePath, SemanticModel semanticModel, List<SyntaxNode> listNode, AttributeSyntax attribute)
+        public static List<ElementIdentifier> getElementIdentifiersForNamespaceMetrics(string filePath, SemanticModel semanticModel, List<SyntaxNode> listNode, AttributeSyntax attribute,
+           Dictionary<string, (string, int)> NamespacesSaved)
         {
             List<ElementIdentifier> targetElementIdentifiers = new List<ElementIdentifier>();
 
-            //se tiver so 1 using e 1 attribute add
-            //(((CompilationUnitSyntax)node.Parent)?.AttributeLists.Count == 1)
-            if (listNode.Count == 1 && listNode.FirstOrDefault().Parent?.DescendantNodes().OfType<AttributeSyntax>().ToList().Count == 1)
-            {
-                targetElementIdentifiers.Add(new ElementIdentifier
-                {
-                    FileDeclarationPath = filePath,
-                    ElementName = "#" + ((UsingDirectiveSyntax)listNode.FirstOrDefault()).Name,
-                    ElementType = ElementIdentifierType.GetElementByType(listNode.FirstOrDefault().GetType()).GetTypeIdentifier()
-                });
 
-                int lineNumber = semanticModel.SyntaxTree.GetLineSpan(listNode.FirstOrDefault().Span).StartLinePosition.Line + 1;
-                targetElementIdentifiers.ForEach(identifier =>
-                {
-                    identifier.LineNumber = lineNumber;
-                });
-            }
-            else
+            try
             {
-                //recupero type da compilacao pelo atributo
-                //Validar todos os tipos de attributes - class/unique .....
+                string attributeDefinitionClass = string.Empty;
                 var typeCompilation = semanticModel.GetTypeInfo(attribute);
                 var attributeName = typeCompilation.Type.MetadataName;
-                var attributeDefinitionClass = typeCompilation.Type.OriginalDefinition;
+                int lineNumber = 0;
 
-                //validar quando erro - salvar namespaces ??
-                if (!attributeDefinitionClass.ToString().Contains("."))
+                if (NamespacesSaved.ContainsKey(attributeName)) (attributeDefinitionClass, lineNumber) = NamespacesSaved[attributeName];
+                else
                 {
-                    //o q fazer quando der erro ??? -- ErrorType
-                    foreach (var item in listNode)
+                    var compilationOriginalDefinition = typeCompilation.Type.OriginalDefinition;
+                    attributeDefinitionClass = compilationOriginalDefinition.ToString().Replace("." + attributeName, "");
+
+                    var namespaceDefinition = string.Empty;
+                    UsingDirectiveSyntax specifiedNode = null;
+
+                    foreach (var node in listNode)
                     {
-                        SemanticModel semanticModel1;
-                        semanticModel.TryGetSpeculativeSemanticModel(1, attribute, out semanticModel1);
-                        var teste = typeCompilation.Type?.GetAttributes().FirstOrDefault(x => x.AttributeClass.MetadataName == attributeName);
+                        string pat = ((UsingDirectiveSyntax)node).Name.ToString();
+
+                        Match possibleMatch = null;
+                        if (!attributeDefinitionClass.ToString().Contains("."))
+                            possibleMatch = Regex.Match(attributeName.ToString(), pat);
+                        else possibleMatch = Regex.Match(attributeDefinitionClass, pat);
+
+                        if ((possibleMatch.Success) && possibleMatch?.Value?.Split(".").Count() >= namespaceDefinition.Split(".").Count())
+                        {
+                            namespaceDefinition = possibleMatch.Value;
+                            specifiedNode = (UsingDirectiveSyntax)listNode.FirstOrDefault(x => ((UsingDirectiveSyntax)x).Name.ToString() == namespaceDefinition);
+                        }
                     }
 
+                    if (specifiedNode is not null) lineNumber = semanticModel.SyntaxTree.GetLineSpan(specifiedNode.Span).StartLinePosition.Line + 1;
+
+                    if (compilationOriginalDefinition.Kind != SymbolKind.ErrorType || attributeDefinitionClass.Contains("."))
+                        NamespacesSaved.Add(attributeName, (attributeDefinitionClass, lineNumber));
                 }
+
                 targetElementIdentifiers.Add(new ElementIdentifier
                 {
                     FileDeclarationPath = filePath,
-                    ElementName = "#" + attributeDefinitionClass.ToString().Replace("." + attributeName, ""),
+                    ElementName = "#" + attributeDefinitionClass + "." + attributeName,
                     ElementType = ElementIdentifierType.NAMESPACE_TYPE.GetTypeIdentifier()
                 });
 
-                var namespaceDefinition = string.Empty;
-                var specifiedNode = (UsingDirectiveSyntax)listNode.FirstOrDefault();
-                foreach (var node in listNode)
-                {
-                    var possibleMatch = Regex.Match(attributeDefinitionClass.ToString().Replace("." + attributeName, ""), ((UsingDirectiveSyntax)node).Name.ToString());
-                    if ((possibleMatch.Success) && possibleMatch?.Value?.Split(".").Count() >= namespaceDefinition.Split(".").Count())
-                    {
-                        namespaceDefinition = possibleMatch.Value;
-                        specifiedNode = (UsingDirectiveSyntax)listNode.FirstOrDefault(x => ((UsingDirectiveSyntax)x).Name.ToString() == namespaceDefinition);
-                    }
-                }
-
-
-                int lineNumber = semanticModel.SyntaxTree.GetLineSpan(specifiedNode.Span).StartLinePosition.Line + 1;
                 targetElementIdentifiers.ForEach(identifier =>
                 {
                     identifier.LineNumber = lineNumber;
                 });
+
             }
+            catch (Exception e)
+            {
+                logger.Info("Ignoring attribute's namespace due to semantic model compilation error {0}.", attribute.Name.ToString());
+            }
+
             return targetElementIdentifiers;
         }
-
         private static string GetIdentifierForParameterSyntax(IParameterSymbol parameterSymbol)
         {
             return string.Format(identifierFormat, parameterSymbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat), parameterSymbol.Name);

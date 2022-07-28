@@ -16,6 +16,7 @@ namespace AttributeSniffer.analyzer
     public class MetricsCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        public List<MetadataReference> metadataReferences;
 
         /// <summary>
         /// Collect metrics of a C# class.
@@ -61,6 +62,7 @@ namespace AttributeSniffer.analyzer
         {
             PortableExecutableReference Mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             CSharpCompilation compilation = CSharpCompilation.Create(assemblyName).AddReferences(Mscorlib).AddSyntaxTrees(tree);
+            if (metadataReferences.Count > 0) compilation = compilation.AddReferences(metadataReferences.ToArray());
 
             return compilation.GetSemanticModel(tree);
         }
