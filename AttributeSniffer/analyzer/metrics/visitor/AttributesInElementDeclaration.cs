@@ -49,7 +49,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         {
             foreach (KeyValuePair<ElementIdentifier, List<AttributeSyntax>> entry in attributesByElement)
             {
-                string metricName = Metric.ATTRIBUTES_IN_ELEMENT_DECLARATION.GetIdentifier();
+                string metricName = Metric.METADATA_DECLARATION_IN_ELEMENT.GetIdentifier();
                 string metricType = MetricType.ELEMENT_METRIC.GetIdentifier();
                 MetricResult metricResult = new MetricResult(entry.Key, metricType, metricName, entry.Value.Count);
                 metricResults.Add(metricResult);

@@ -1,0 +1,67 @@
+﻿using AttributeSniffer.analyzer.metrics.model;
+using AttributeSniffer.analyzer.metrics.visitor.util;
+using AttributeSniffer.analyzer.model;
+using AttributeSniffer.analyzer.model.exception;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AttributeSniffer.analyzer.metrics.visitor
+{
+    public class NumberOfElementsWithMetadataInClass : CSharpSyntaxWalker, IMetricCollector
+    {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private SemanticModel SemanticModel { get; set; }
+        private string FilePath { get; set; }
+        private List<MetricResult> ResultsByElement { get; set; } = new List<MetricResult>();
+
+        public override void Visit(SyntaxNode node)
+        {
+            try
+            {
+                int elementIdentifiers = ElementIdentifierHelper.getElementIdentifiersNumberWithMetadataInClass(node);
+
+                string metricName = Metric.NUMBER_OF_ELEMENTS_WITH_METADATA_IN_CLASS.GetIdentifier();
+                string metricType = MetricType.CLASS_METRIC.GetIdentifier();
+
+                if (elementIdentifiers > 0)
+                {
+                    ResultsByElement.Add(new MetricResult(new ElementIdentifier()
+                    {
+                        ElementName = "Number of Elements with Metadata in Class",
+                        ElementType = ElementIdentifierType.NUMBER_OF_ELEMENTS.GetTypeIdentifier(),
+                        FileDeclarationPath = FilePath,
+                        LineNumber = 0
+                    }, metricType, metricName, elementIdentifiers));
+                }
+            }
+            catch (IgnoreElementIdentifierException e)
+            {
+                logger.Info("Ignoring class due to syntax error {0}.", e.Message);
+            }
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(true);
+        }
+
+        public void SetSemanticModel(SemanticModel semanticModel)
+        {
+            this.SemanticModel = semanticModel;
+        }
+
+        public void SetFilePath(string filePath)
+        {
+            this.FilePath = filePath;
+        }
+
+        public void SetResult(List<MetricResult> metricResults)
+        {
+            metricResults.AddRange(ResultsByElement);
+        }
+    }
+}

@@ -23,6 +23,48 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             return new ElementIdentifier("", elementType, 0, filePath);
         }
 
+        public static int getElementIdentifiersNumberWithMetadataInClass(SyntaxNode node)
+        {
+            int elementsCount = 0;
+
+            foreach (var item in node.DescendantNodes().Where(x => x is AttributeSyntax).ToList())
+            {
+                if (item.Ancestors().Any(x=> x is ConstructorDeclarationSyntax || x is MethodDeclarationSyntax || x is VariableDeclarationSyntax || 
+                x is PropertyDeclarationSyntax || x is DelegateDeclarationSyntax || x is EventDeclarationSyntax || x is FieldDeclarationSyntax ||
+                x is InterfaceDeclarationSyntax || x is ReturnStatementSyntax || x is StructDeclarationSyntax ||
+                x is ClassDeclarationSyntax || x is EnumDeclarationSyntax || x is ParameterSyntax))
+                {
+                    elementsCount++;
+                }
+            }
+
+            return elementsCount;
+        }
+
+        public static int getElementIdentifiersNumberInClass(SyntaxNode node)
+        {
+            int elementsCount = 0;
+
+            elementsCount += node.DescendantNodes().Where(x => x is MethodDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is VariableDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is PropertyDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is ClassDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is EnumDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is ParameterSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is AttributeSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is ConstructorDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is NamespaceDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is ReturnStatementSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is FieldDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is EventDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is DelegateDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is InterfaceDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is StructDeclarationSyntax).ToList().Count;
+            elementsCount += node.DescendantNodes().Where(x => x is TypeParameterSyntax).ToList().Count;
+
+            return elementsCount;
+        }
+
         public static List<ElementIdentifier> getElementIdentifiersForAttributeMetrics(string filePath, SemanticModel semanticModel, AttributeSyntax node)
         {
             List<ElementIdentifier> targetElementIdentifiers = getElementIdentifiersForElementMetrics(filePath, semanticModel, (AttributeListSyntax)node.Parent);
@@ -154,7 +196,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                     elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
                 }
             }
-
+            
             return elementIdentifiers;
         }
 
@@ -163,12 +205,11 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
         {
             List<ElementIdentifier> targetElementIdentifiers = new List<ElementIdentifier>();
 
-
             try
             {
                 string attributeDefinitionClass = string.Empty;
                 var typeCompilation = semanticModel.GetTypeInfo(attribute);
-                var attributeName = typeCompilation.Type.MetadataName;
+                var attributeName = typeCompilation.Type?.MetadataName;
                 int lineNumber = 0;
 
                 if (NamespacesSaved.ContainsKey(attributeName)) (attributeDefinitionClass, lineNumber) = NamespacesSaved[attributeName];
@@ -247,7 +288,6 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
             {
                 ISymbol elementSymbol = semanticModel.GetDeclaredSymbol(variable);
                 string identifier = elementSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
-                string elementIdentifier = identifier.Remove(identifier.LastIndexOf(".") + 1) + variable.Identifier.Text;
                 int lineNumber = semanticModel.SyntaxTree.GetLineSpan(variables.First().Span).StartLinePosition.Line + 1;
                 fieldIdentifiers.Add(identifier, lineNumber);
             }

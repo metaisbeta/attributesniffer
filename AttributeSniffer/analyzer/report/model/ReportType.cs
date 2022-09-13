@@ -17,6 +17,10 @@ namespace AttributeSniffer.analyzer.report
         {
             get { return new ReportType("xml", ".xml"); }
         }
+        public static ReportType CSV
+        {
+            get { return new ReportType("csv", ".csv"); }
+        }
 
         private string identifier;
         private string fileExtension;
@@ -35,7 +39,7 @@ namespace AttributeSniffer.analyzer.report
         {
             return new List<ReportType>
             {
-                JSON, XML
+                JSON, XML, CSV
             };
         }
 

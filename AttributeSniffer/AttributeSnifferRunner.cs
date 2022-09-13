@@ -24,7 +24,7 @@ namespace AttributeSniffer
             ProjectReport projectReport = new Sniffer().Sniff(pathToAnalyze);
 
             // Process report and print to console
-            string report = new Reporter().Report(projectReport, reportType, reportPath);
+            new Reporter().Report(projectReport, reportType, reportPath);
             Console.WriteLine("Finished analyzing project: " + projectReport.ProjectName);
         }
 
@@ -39,7 +39,7 @@ namespace AttributeSniffer
             // Analyze multiple projects
             string[] projectDirectories = Directory.GetDirectories(pathToAnalyze);
 
-            foreach(string projectDirectory in projectDirectories)
+            foreach (string projectDirectory in projectDirectories)
             {
                 AnalyzeSingle(projectDirectory, reportPath, reportType);
             }

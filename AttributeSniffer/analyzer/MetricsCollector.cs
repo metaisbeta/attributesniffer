@@ -39,7 +39,9 @@ namespace AttributeSniffer.analyzer
                 metric.SetResult(metricsResults);
                 metric.Dispose();
             }
-
+            GC.Collect(GC.GetGeneration(tree));
+            GC.Collect(GC.GetGeneration(root));
+            GC.Collect(GC.GetGeneration(semanticModel));
             return metricsResults;
         }
 
@@ -62,7 +64,7 @@ namespace AttributeSniffer.analyzer
         {
             PortableExecutableReference Mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             CSharpCompilation compilation = CSharpCompilation.Create(assemblyName).AddReferences(Mscorlib).AddSyntaxTrees(tree);
-            if (metadataReferences.Count > 0) compilation = compilation.AddReferences(metadataReferences.ToArray());
+            if (metadataReferences?.Count > 0) compilation = compilation.AddReferences(metadataReferences.ToArray());
 
             return compilation.GetSemanticModel(tree);
         }

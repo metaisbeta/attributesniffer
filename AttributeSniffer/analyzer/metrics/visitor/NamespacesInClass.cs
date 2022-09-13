@@ -18,24 +18,17 @@ namespace AttributeSniffer.analyzer.metrics.visitor
 
         private SemanticModel SemanticModel { get; set; }
         private string FilePath { get; set; }
-        private int NumberOfArguments { get; set; } = 0;
-
         private List<MetricResult> ResultsByElement { get; set; } = new List<MetricResult>();
 
         private static Dictionary<string, (string, int)> NamespacesSaved = new Dictionary<string, (string, int)>();
 
-
         public override void Visit(SyntaxNode node)
         {
             List<MetricResult> metricResults = new List<MetricResult>();
-
             
             metricResults = GetResults(node);
-            this.NumberOfArguments = metricResults.Count;
             if (metricResults.Count != 0)
-            {
                 ResultsByElement.AddRange(metricResults);
-            }
         }
 
         private List<MetricResult> GetResults(SyntaxNode syntaxNode)
@@ -49,17 +42,17 @@ namespace AttributeSniffer.analyzer.metrics.visitor
                      List<ElementIdentifier> elementIdentifiers = ElementIdentifierHelper.getElementIdentifiersForNamespaceMetrics(FilePath,
                         SemanticModel, syntaxNode.DescendantNodes().Where(a => a is UsingDirectiveSyntax).ToList(), (AttributeSyntax)item, NamespacesSaved);
                     //usings
-                    string metricName = Metric.NAMESPACES_IN_CLASS.GetIdentifier();
+                    string metricName = Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier();
                     string metricType = MetricType.ELEMENT_METRIC.GetIdentifier();
                     elementIdentifiers.ForEach(identifier =>
                     {
-                        metricResults.Add(new MetricResult(identifier, metricType, metricName, NumberOfArguments));
+                        metricResults.Add(new MetricResult(identifier, metricType, metricName, 1));
                     });
                 }
             }
             catch (IgnoreElementIdentifierException e)
             {
-                logger.Info("Ignoring using due to syntax error {0}.");
+                logger.Info("Ignoring using due to syntax error {0}.", e.Message);
             }
 
             return metricResults;
@@ -83,31 +76,5 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         {
             GC.SuppressFinalize(true);
         }
-    }
-
-    public static class INamespaceSymbolExtension
-    {
-        public static IEnumerable<INamedTypeSymbol> GetAllTypes(this INamespaceSymbol @namespace)
-        {
-            Queue<INamespaceOrTypeSymbol> symbols = new Queue<INamespaceOrTypeSymbol>();
-            symbols.Enqueue(@namespace);
-
-            while (symbols.Count > 0)
-            {
-                INamespaceOrTypeSymbol namespaceOrTypeSymbol = symbols.Dequeue();
-                INamespaceSymbol namespaceSymbol = namespaceOrTypeSymbol as INamespaceSymbol;
-                if (namespaceSymbol == null)
-                {
-                    INamedTypeSymbol typeSymbol = (INamedTypeSymbol)namespaceOrTypeSymbol;
-                    Array.ForEach(typeSymbol.GetTypeMembers().ToArray(), symbols.Enqueue);
-
-                    yield return typeSymbol;
-                }
-                else
-                {
-                    Array.ForEach(namespaceSymbol.GetMembers().ToArray(), symbols.Enqueue);
-                }
-            }
-        }
-    }
+    }    
 }

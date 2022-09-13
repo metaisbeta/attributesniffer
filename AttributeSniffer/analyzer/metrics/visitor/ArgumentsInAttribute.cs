@@ -62,7 +62,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
             {
                 List<ElementIdentifier> elementIdentifiers = ElementIdentifierHelper.getElementIdentifiersForAttributeMetrics(FilePath, SemanticModel, VisitedAttribute);
 
-                string metricName = Metric.ARGUMENTS_IN_ATTRIBUTE.GetIdentifier();
+                string metricName = Metric.ARGUMENTS_IN_METADATA.GetIdentifier();
                 string metricType = MetricType.ELEMENT_METRIC.GetIdentifier();
                 elementIdentifiers.ForEach(identifier =>
                 {

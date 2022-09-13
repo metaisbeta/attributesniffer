@@ -10,6 +10,12 @@ namespace AttributeSniffer.example.classes
     [Attribute1]
     class ClassTeste2
     {
+        [Attribute3]
+        public ClassTeste2()
+        {
+
+        }
+
         [Attribute2]
         [Attribute2]
         public void teste1()
@@ -19,20 +25,29 @@ namespace AttributeSniffer.example.classes
         [Attribute2]
         public void teste2()
         {
+
         }
     }
     [Attribute1]
     class ClassTeste1
     {
+        [Attribute4]
+        enum MyEnum
+        {
+            a, b, c, d, e
+        }
+
         [Attribute2]
         [Attribute2]
         public void teste3()
         {
+            ClassTeste2 classTeste2 = new ClassTeste2();
         }
 
         [Attribute2]
-        public void teste4()
-        {
+        public int teste4()
+        { 
+            return 0;
         }
     }
 }

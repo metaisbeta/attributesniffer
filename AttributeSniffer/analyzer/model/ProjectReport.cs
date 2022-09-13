@@ -38,7 +38,8 @@ namespace AttributeSniffer.analyzer.model
             this.MetricsResults = new List<MetricResult>();
         }
 
-        public ProjectReport(string projectName, int classesNumber, int classesWithAttributesNumber, int attributesNumber, int namespaceAttributesNumber, List<MetricResult> metricsResults, List<MetricResult> namespacesPerClassResults, List<MetricResult> namespaceMetricsAllProject)
+        public ProjectReport(string projectName, int classesNumber, int classesWithAttributesNumber, int attributesNumber, int namespaceAttributesNumber,
+            List<MetricResult> metricsResults, List<MetricResult> namespacesPerClassResults, List<MetricResult> namespaceMetricsAllProject)
         {
             ProjectName = projectName;
             ClassesNumber = classesNumber;

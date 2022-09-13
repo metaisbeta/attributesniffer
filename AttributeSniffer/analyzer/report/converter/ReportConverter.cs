@@ -1,4 +1,7 @@
-﻿using System.Xml;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using AttributeSniffer.analyzer.model;
 using ExtendedXmlSerializer.Configuration;
 using ExtendedXmlSerializer.ExtensionModel.Xml;
@@ -22,19 +25,37 @@ namespace AttributeSniffer.analyzer.report
         /// <returns>The project report converted to the report type.</returns>
         public Report Convert(ProjectReport projectReport, string reportType)
         {
+            return Convert(projectReport, reportType, null);
+        }
+        public Report Convert(ProjectReport projectReport, string reportType, string metric)
+        {
             if (ReportType.JSON.GetIdentifier().Equals(reportType))
             {
                 logger.Info("Converting project report to JSON.");
                 return new Report(CreateJSON(projectReport), ReportType.JSON);
-            } else if (ReportType.XML.GetIdentifier().Equals(reportType))
+            }
+            else if (ReportType.XML.GetIdentifier().Equals(reportType))
             {
                 logger.Info("Converting project report to XML.");
                 return new Report(CreateXML(projectReport), ReportType.XML);
-            } else
+            }
+            else if (ReportType.CSV.GetIdentifier().Equals(reportType))
+            {
+                logger.Info($"Converting project report to CSV - Metric:{metric}.");
+                return new Report(CreateCSV(projectReport, metric), ReportType.CSV);
+            }
+            else
             {
                 logger.Info("A report type could not be found. Converting project report to JSON.");
                 return new Report(CreateJSON(projectReport), ReportType.JSON);
-            }  
+            }
+        }
+
+        private string CreateCSV(ProjectReport projectReport, string metric)
+        {
+            List<int> valuesPerMetric = projectReport.MetricsResults.Where(x => x.Metric.Equals(metric)).Select(x=> x.Result).ToList();
+            valuesPerMetric.Sort();
+            return string.Join(",", valuesPerMetric);
         }
 
         private string CreateJSON(ProjectReport projectReport)
@@ -44,7 +65,7 @@ namespace AttributeSniffer.analyzer.report
 
         private string CreateXML(ProjectReport projectReport)
         {
-            IExtendedXmlSerializer serializer = new ConfigurationContainer().Create();
+            IExtendedXmlSerializer serializer = new ConfigurationContainer().EnableReferences().Create();
             return serializer.Serialize(new XmlWriterSettings { Indent = true }, projectReport);
         }
     }

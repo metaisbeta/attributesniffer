@@ -21,6 +21,10 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
         {
             get { return new ElementIdentifierType(null, "module", "Module"); }
         }
+        public static ElementIdentifierType NUMBER_OF_ELEMENTS
+        {
+            get { return new ElementIdentifierType(null, "number", "numberOfElements"); }
+        }
 
         public static ElementIdentifierType STRUCT_TYPE
         {
@@ -80,10 +84,15 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
         public static ElementIdentifierType RETURN_TYPE
         {
             get { return new ElementIdentifierType(typeof(ReturnStatementSyntax), "return", "Return"); }
-        } 
+        }        
         public static ElementIdentifierType NAMESPACE_TYPE
         {
             get { return new ElementIdentifierType(typeof(UsingDirectiveSyntax), "namespace", "Namespace"); }
+        }
+
+        public static ElementIdentifierType CONSTRUCTOR_TYPE
+        {
+            get { return new ElementIdentifierType(typeof(ConstructorDeclarationSyntax), "constructor", "Constructor"); }
         }
 
         private Type type;
@@ -119,7 +128,9 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                 PARAMETER_TYPE,
                 TYPE_PARAMETER_TYPE,
                 RETURN_TYPE,
-                NAMESPACE_TYPE
+                NAMESPACE_TYPE,
+                NUMBER_OF_ELEMENTS,
+                CONSTRUCTOR_TYPE
             };
         }
 

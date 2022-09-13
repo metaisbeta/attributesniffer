@@ -42,7 +42,7 @@ namespace AttributeSniffer.analyzer.metrics
         public void SetResult(List<MetricResult> metricResults)
         {
             if (ElementIdentifier != null) {
-                string metricName = Metric.ATTRIBUTES_IN_CLASS.GetIdentifier();
+                string metricName = Metric.METADATA_DECLARATION_IN_CLASS.GetIdentifier();
                 string metricType = MetricType.CLASS_METRIC.GetIdentifier();
                 metricResults.Add(new MetricResult(ElementIdentifier, metricType, metricName, NumberOfAttributes));
             }

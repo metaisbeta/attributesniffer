@@ -9,48 +9,42 @@ namespace AttributeSniffer.analyzer.metrics
     {
         // Metrics
         //Class
-        public static Metric ATTRIBUTES_IN_CLASS
+        public static Metric METADATA_DECLARATION_IN_CLASS
         {
-            get { return new Metric("AC"); }
-        } 
+            get { return new Metric("MC"); }
+        }
+        public static Metric UNIQUE_METADATA_DECLARATION_IN_CLASS
+        {
+            get { return new Metric("UMC"); }
+        }
         //Namespace
-        public static Metric NAMESPACES_IN_CLASS
+        public static Metric METADATA_SCHEMA_IN_CLASS
         {
-            get { return new Metric("NIC"); }
-        }
-
-        public static Metric UNIQUE_ATTRIBUTES_IN_CLASS
-        {
-            get { return new Metric("UAC"); }
-        }         
-        public static Metric ATTRIBUTES_SCHEMA_IN_CLASS
-        {//add
-            get { return new Metric("ASC"); }
-        }
-        public static Metric NUMBER_ATTRIBUTES_IN_CLASS
-        {//add
-            get { return new Metric("NAEC"); }
+            get { return new Metric("MSC"); }
         }
         //Code
-        public static Metric ATTRIBUTES_IN_ELEMENT_DECLARATION
+        public static Metric METADATA_DECLARATION_IN_ELEMENT
         {
-            get { return new Metric("AED"); }
+            get { return new Metric("MDE"); }
         }
         //Attributes
-        public static Metric ARGUMENTS_IN_ATTRIBUTE
+        public static Metric ARGUMENTS_IN_METADATA
         {
-            get { return new Metric("AA"); }
-        }
-        public static Metric ATTRIBUTES_NESTING_LEVEL
-        {//add
-            get { return new Metric("ANL"); }
+            get { return new Metric("AM"); }
         }
 
-        public static Metric LOC_IN_ATTRIBUTE_DECLARATION
+        public static Metric LOC_IN_METADATA_DECLARATION
         {
-            get { return new Metric("LOCAD"); }
+            get { return new Metric("LOCMD"); }
         }
-
+        public static Metric NUMBER_OF_ELEMENTS_IN_CLASS
+        {
+            get { return new Metric("NEC"); }
+        } 
+        public static Metric NUMBER_OF_ELEMENTS_WITH_METADATA_IN_CLASS
+        {
+            get { return new Metric("NEMC"); }
+        }
         private string identifier;
 
         public string GetIdentifier() { return this.identifier; }
@@ -64,14 +58,14 @@ namespace AttributeSniffer.analyzer.metrics
         {
             return new List<Metric>
             {
-                ATTRIBUTES_IN_CLASS,
-                UNIQUE_ATTRIBUTES_IN_CLASS,
-                ATTRIBUTES_IN_ELEMENT_DECLARATION,
-                ARGUMENTS_IN_ATTRIBUTE,
-                LOC_IN_ATTRIBUTE_DECLARATION,
-                ATTRIBUTES_SCHEMA_IN_CLASS,
-                NUMBER_ATTRIBUTES_IN_CLASS,
-                ATTRIBUTES_NESTING_LEVEL
+                METADATA_DECLARATION_IN_CLASS,
+                UNIQUE_METADATA_DECLARATION_IN_CLASS,
+                METADATA_DECLARATION_IN_ELEMENT,
+                ARGUMENTS_IN_METADATA,
+                LOC_IN_METADATA_DECLARATION,
+                METADATA_SCHEMA_IN_CLASS,
+                NUMBER_OF_ELEMENTS_WITH_METADATA_IN_CLASS,
+                NUMBER_OF_ELEMENTS_IN_CLASS
             };
         }
 

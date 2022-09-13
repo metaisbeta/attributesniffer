@@ -47,7 +47,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         {
             if (ElementIdentifier != null)
             {
-                string metricName = Metric.UNIQUE_ATTRIBUTES_IN_CLASS.GetIdentifier();
+                string metricName = Metric.UNIQUE_METADATA_DECLARATION_IN_CLASS.GetIdentifier();
                 string metricType = MetricType.CLASS_METRIC.GetIdentifier();
                 metricResults.Add(new MetricResult(ElementIdentifier, metricType, metricName, UniqueAttributes.Count));
             }

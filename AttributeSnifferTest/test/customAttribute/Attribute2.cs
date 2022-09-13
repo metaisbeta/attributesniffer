@@ -10,4 +10,12 @@ namespace AttributeSniffer.example.customAttribute
     class Attribute2 : System.Attribute
     {
     }
+    [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = true)]
+    class Attribute3 : System.Attribute
+    {
+    }
+    [AttributeUsage(AttributeTargets.Enum)]
+    class Attribute4 : System.Attribute
+    {
+    }
 }
