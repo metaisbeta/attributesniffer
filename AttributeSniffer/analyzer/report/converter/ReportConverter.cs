@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using AttributeSniffer.analyzer.metrics;
 using AttributeSniffer.analyzer.model;
 using ExtendedXmlSerializer.Configuration;
 using ExtendedXmlSerializer.ExtensionModel.Xml;
@@ -53,7 +54,11 @@ namespace AttributeSniffer.analyzer.report
 
         private string CreateCSV(ProjectReport projectReport, string metric)
         {
-            List<int> valuesPerMetric = projectReport.MetricsResults.Where(x => x.Metric.Equals(metric)).Select(x=> x.Result).ToList();
+            List<int> valuesPerMetric = new();
+            if (metric == Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier())
+                valuesPerMetric = projectReport.NamespacesPerClassResults.Where(x => x.Metric.Equals(metric)).Select(x => x.Result).ToList();
+            else
+                valuesPerMetric = projectReport.MetricsResults.Where(x => x.Metric.Equals(metric)).Select(x => x.Result).ToList();
             valuesPerMetric.Sort();
             return string.Join(",", valuesPerMetric);
         }

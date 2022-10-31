@@ -25,7 +25,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         public override void Visit(SyntaxNode node)
         {
             List<MetricResult> metricResults = new List<MetricResult>();
-            
+
             metricResults = GetResults(node);
             if (metricResults.Count != 0)
                 ResultsByElement.AddRange(metricResults);
@@ -34,21 +34,20 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         private List<MetricResult> GetResults(SyntaxNode syntaxNode)
         {
             List<MetricResult> metricResults = new List<MetricResult>();
-            
+            List<ElementIdentifier> elementIdentifiers = new();
             try
             {
                 foreach (var item in syntaxNode.DescendantNodes().Where(x => x is AttributeSyntax).ToList())
-                {                    
-                     List<ElementIdentifier> elementIdentifiers = ElementIdentifierHelper.getElementIdentifiersForNamespaceMetrics(FilePath,
-                        SemanticModel, syntaxNode.DescendantNodes().Where(a => a is UsingDirectiveSyntax).ToList(), (AttributeSyntax)item, NamespacesSaved);
-                    //usings
-                    string metricName = Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier();
-                    string metricType = MetricType.ELEMENT_METRIC.GetIdentifier();
-                    elementIdentifiers.ForEach(identifier =>
-                    {
-                        metricResults.Add(new MetricResult(identifier, metricType, metricName, 1));
-                    });
+                {
+                    elementIdentifiers.AddRange(ElementIdentifierHelper.getElementIdentifiersForNamespaceMetrics(FilePath,
+                        SemanticModel, syntaxNode.DescendantNodes().Where(a => a is UsingDirectiveSyntax).ToList(), (AttributeSyntax)item, NamespacesSaved));
                 }
+                string metricName = Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier();
+                string metricType = MetricType.ELEMENT_METRIC.GetIdentifier();
+                elementIdentifiers.ForEach(identifier =>
+                {
+                    metricResults.Add(new MetricResult(identifier, metricType, metricName, elementIdentifiers.Count));
+                });
             }
             catch (IgnoreElementIdentifierException e)
             {
@@ -76,5 +75,5 @@ namespace AttributeSniffer.analyzer.metrics.visitor
         {
             GC.SuppressFinalize(true);
         }
-    }    
+    }
 }
