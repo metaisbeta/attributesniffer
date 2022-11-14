@@ -9,7 +9,10 @@ namespace AttributeSniffer.analyzer.model
     public class ElementIdentifier
     {
         [JsonProperty]
-        public string ElementName { get; set; }
+        public string ElementName { get; set; } 
+        
+        [JsonProperty]
+        public string ElementSchema { get; set; }
 
         [JsonProperty]
         public string ElementType { get; set; }
@@ -25,12 +28,13 @@ namespace AttributeSniffer.analyzer.model
             // For serialization
         }
 
-        public ElementIdentifier(string elementName, string elementType, int lineNumber, string fileDeclarationPath)
+        public ElementIdentifier(string elementName, string elementType, int lineNumber, string fileDeclarationPath, string elementSchema)
         {
             ElementName = elementName;
             ElementType = elementType;
             LineNumber = lineNumber;
             FileDeclarationPath = fileDeclarationPath;
+            ElementSchema = elementSchema;
         }
 
         public override bool Equals(object obj)
@@ -40,12 +44,13 @@ namespace AttributeSniffer.analyzer.model
                    ElementName == identifier.ElementName &&
                    ElementType == identifier.ElementType &&
                    LineNumber == identifier.LineNumber &&
-                   FileDeclarationPath == identifier.FileDeclarationPath;
+                   FileDeclarationPath == identifier.FileDeclarationPath &&
+                   ElementSchema == identifier.ElementSchema;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ElementName, ElementType, LineNumber, FileDeclarationPath);
+            return HashCode.Combine(ElementName, ElementType, LineNumber, FileDeclarationPath, ElementSchema);
         }
     }
 }

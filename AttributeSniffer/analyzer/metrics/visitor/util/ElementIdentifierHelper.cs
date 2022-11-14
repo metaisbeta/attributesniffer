@@ -20,7 +20,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
         public static ElementIdentifier getElementIdentifierForClassMetrics(string filePath, SemanticModel semanticModel, AttributeSyntax attribute)
         {
             string elementType = ElementIdentifierType.CS_FILE_TYPE.GetTypeIdentifier();
-            return new ElementIdentifier("", elementType, 0, filePath);
+            return new ElementIdentifier("", elementType, 0, filePath, "");
         }
 
         public static int getElementIdentifiersNumberWithMetadataInClass(SyntaxNode node)
@@ -115,17 +115,17 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                             Tuple<string, int> fieldInformation = GetIdentifierForReturnStatement(semanticModel, node.Parent);
                             elementIdentifier = fieldInformation.Item1;
                             lineNumber = fieldInformation.Item2;
-                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
+                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath, string.Empty));
                         }
                         else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.ASSEMBLY_TYPE.GetElementTarget())
                         {
                             elementIdentifier = semanticModel.Compilation.AssemblyName;
-                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
+                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath, string.Empty));
                         }
                         else if (elementIdentifierType.GetElementTarget() == ElementIdentifierType.MODULE_TYPE.GetElementTarget())
                         {
                             elementIdentifier = semanticModel.Compilation.SourceModule.Name;
-                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
+                            elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath, string.Empty));
                         }
                         else
                         {
@@ -171,7 +171,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                     elementType = ElementIdentifierType.GetElementByType(attributeTargetNode.GetType()).GetTypeIdentifier();
                     Dictionary<string, int> fieldInformations = GetIdentifierForFieldDeclaration(semanticModel, (BaseFieldDeclarationSyntax)attributeTargetNode);
 
-                    fieldInformations.ForEach(info => elementIdentifiers.Add(new ElementIdentifier(info.Key, elementType, info.Value, filePath)));
+                    fieldInformations.ForEach(info => elementIdentifiers.Add(new ElementIdentifier(info.Key, elementType, info.Value, filePath, string.Empty)));
                 }
                 else
                 {
@@ -193,7 +193,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                     }
                     elementType = ElementIdentifierType.GetElementByType(attributeTargetNode.GetType()).GetTypeIdentifier();
                     lineNumber = semanticModel.SyntaxTree.GetLineSpan(attributeTargetNode.Span).StartLinePosition.Line + 1;
-                    elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath));
+                    elementIdentifiers.Add(new ElementIdentifier(elementIdentifier, elementType, lineNumber, filePath, string.Empty));
                 }
             }
             
@@ -246,7 +246,8 @@ namespace AttributeSniffer.analyzer.metrics.visitor.util
                 targetElementIdentifiers.Add(new ElementIdentifier
                 {
                     FileDeclarationPath = filePath,
-                    ElementName = "#" + attributeDefinitionClass + "." + attributeName,
+                    ElementName = "#" + attributeName,
+                    ElementSchema = attributeDefinitionClass,
                     ElementType = ElementIdentifierType.NAMESPACE_TYPE.GetTypeIdentifier()
                 });
 

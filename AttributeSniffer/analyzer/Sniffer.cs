@@ -66,7 +66,7 @@ namespace AttributeSniffer.analyzer
                     collectedMetrics.Where(x => x.Metric != Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier()).OrderBy(metric => metric.Metric).ToList();
 
                 List<MetricResult> namespaceMetricsPerClass = collectedMetrics.Where(x => x.Metric.Equals(Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier())).ToList();
-                List<MetricResult> namespaceMetricsAllProject = namespaceMetricsPerClass.Distinct(x => x.ElementIdentifier.ElementName).ToList();
+                List<MetricResult> namespaceMetricsAllProject = namespaceMetricsPerClass.Distinct(x => x.ElementIdentifier.ElementSchema).ToList();
                 int numberOfNamespaces = namespaceMetricsAllProject.Count();
                                 
                 return new ProjectReport(GetProjectName(folderPath), csFiles.Count(), acMetrics.Count, numberOfAttributes, numberOfNamespaces,

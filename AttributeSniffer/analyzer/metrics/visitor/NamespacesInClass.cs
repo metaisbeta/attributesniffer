@@ -46,7 +46,7 @@ namespace AttributeSniffer.analyzer.metrics.visitor
                 string metricType = MetricType.ELEMENT_METRIC.GetIdentifier();
                 elementIdentifiers.ForEach(identifier =>
                 {
-                    metricResults.Add(new MetricResult(identifier, metricType, metricName, elementIdentifiers.Count));
+                    metricResults.Add(new MetricResult(identifier, metricType, metricName, elementIdentifiers.Distinct(x => x.ElementSchema).Count()));
                 });
             }
             catch (IgnoreElementIdentifierException e)
