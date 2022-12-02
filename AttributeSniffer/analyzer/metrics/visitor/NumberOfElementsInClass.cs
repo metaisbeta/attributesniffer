@@ -11,6 +11,9 @@ using System.Text;
 
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
+    /// <summary>
+    /// Visit a compilation unit to extract the NEC metric.
+    /// </summary>
     public class NumberOfElementsInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();

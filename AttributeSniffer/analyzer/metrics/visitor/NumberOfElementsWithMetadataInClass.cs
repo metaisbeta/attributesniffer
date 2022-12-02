@@ -11,6 +11,9 @@ using System.Text;
 
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
+    /// <summary>
+    /// Visit a compilation unit to extract the NEMC metric.
+    /// </summary>
     public class NumberOfElementsWithMetadataInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();

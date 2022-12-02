@@ -9,8 +9,6 @@ namespace AttributeSniffer
     {
         static void Main(string[] args)
         {
-            //MSBuildLocator.RegisterDefaults();
-            //MSBuildLocator.RegisterInstance(vsVersion);
             string pathToAnalyze = "";
             string reportPath = "";
             string projectType = "";

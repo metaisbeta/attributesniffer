@@ -8,10 +8,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
+    /// <summary>
+    /// Visit a compilation unit to extract the MSC metric.
+    /// </summary>
     public class MetadataSchemaInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
