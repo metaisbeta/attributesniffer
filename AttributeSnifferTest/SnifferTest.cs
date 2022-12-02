@@ -12,10 +12,8 @@ namespace AttributeSnifferTest
         public string Path { get; set; }
         public SnifferTest()
         {
-            //Path = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\test";
-            //Path = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.Parent}\\PowerShell-master\\src";
-            Path = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.Parent.Parent.Parent}\\Área de Trabalho\\TCC\\shadowsocks-windows-main\\shadowsocks-windows-main";
-
+            Path = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\test";
+  
         }
 
         [Fact]
@@ -23,9 +21,11 @@ namespace AttributeSnifferTest
         {            
             Sniffer sniffer = new Sniffer();
             ProjectReport projectReport = sniffer.Sniff(Path);
-            Assert.Equal(37, projectReport.MetricsResults.Count);
+            Assert.Equal(52, projectReport.MetricsResults.Count);
+            Assert.Equal(5, projectReport.NamespaceMetricsAllProject.Count);
+            Assert.Equal(14, projectReport.NamespacesPerClassResults.Count);
             Assert.Equal(3, projectReport.ClassesNumber);
-            Assert.Equal(10, projectReport.AttributesNumber);
+            Assert.Equal(14, projectReport.AttributesNumber);
         }
         
     }

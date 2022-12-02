@@ -11,9 +11,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
     /// <summary>
-    /// Visit a compilation unit to extract the LOCAD metric.
+    /// Visit a compilation unit to extract the LOCMD metric.
     /// </summary>
-    class LocInAttributeDeclaration : CSharpSyntaxWalker, IMetricCollector
+    class LocInMetadataDeclaration : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

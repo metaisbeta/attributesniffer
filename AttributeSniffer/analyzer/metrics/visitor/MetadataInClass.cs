@@ -10,9 +10,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace AttributeSniffer.analyzer.metrics
 {
     /// <summary>
-    /// Visit a compilation unit to extract the AC metric.
+    /// Visit a compilation unit to extract the MC metric.
     /// </summary>
-    class AttributesInClass : CSharpSyntaxWalker, IMetricCollector
+    class MetadataInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private SemanticModel SemanticModel { get; set; }
         private string FilePath { get; set; }

@@ -10,9 +10,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
     /// <summary>
-    /// Visit a compilation unit to extract the UAC metric.
+    /// Visit a compilation unit to extract the UMC metric.
     /// </summary>
-    class UniqueAttributesInClass : CSharpSyntaxWalker, IMetricCollector
+    class UniqueMetadataInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private SemanticModel SemanticModel { get; set; }
         private string FilePath { get; set; }

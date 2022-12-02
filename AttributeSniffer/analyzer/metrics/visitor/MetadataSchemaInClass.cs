@@ -12,7 +12,7 @@ using System.Text;
 
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
-    public class NamespacesInClass : CSharpSyntaxWalker, IMetricCollector
+    public class MetadataSchemaInClass : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

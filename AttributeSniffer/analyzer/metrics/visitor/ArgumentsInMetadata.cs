@@ -11,9 +11,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace AttributeSniffer.analyzer.metrics.visitor
 {
     /// <summary>
-    /// Visit a compilation unit to extract the AA metric.
+    /// Visit a compilation unit to extract the AM metric.
     /// </summary>
-    class ArgumentsInAttribute : CSharpSyntaxWalker, IMetricCollector
+    class ArgumentsInMetadata : CSharpSyntaxWalker, IMetricCollector
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 

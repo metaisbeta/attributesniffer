@@ -58,7 +58,7 @@ namespace AttributeSnifferTest
             string fullPath = $"{Path}\\classes\\ClassTeste2.cs";
             string classContent = File.ReadAllText(fullPath);
             List<MetricResult> acMetrics = metricsCollector.Collect(fullPath, classContent);
-            Assert.Equal(4, acMetrics.Where(a => a.Metric == Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier()).Distinct(x => x.ElementIdentifier.ElementName).Count());
+            Assert.Equal(4, acMetrics.Where(a => a.Metric == Metric.METADATA_SCHEMA_IN_CLASS.GetIdentifier()).Distinct(x => x.ElementIdentifier.ElementSchema).Count());
         }
         [Fact]
         public void MetricCollectLocmdAssert()
