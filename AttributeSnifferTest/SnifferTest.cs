@@ -12,7 +12,7 @@ namespace AttributeSnifferTest
         public string Path { get; set; }
         public SnifferTest()
         {
-            Path = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\test";
+            Path = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}/test";
   
         }
 
